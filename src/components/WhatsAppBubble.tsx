@@ -14,22 +14,18 @@ const WhatsAppBubble = () => {
   return (
     <motion.button
       type="button"
-      title="Quick Action"
-      aria-label="Quick Action — open enquiry"
+      title="Enquire about a property"
+      aria-label="Enquire about a property"
       onClick={() => openEnquiry({ defaultEnquiryType: "General Enquiry" })}
       whileHover={{ scale: 1.04 }}
       whileTap={{ scale: 0.96 }}
-      className="group fixed bottom-7 right-7 z-50 inline-flex items-center gap-3 sm:bottom-8 sm:right-8"
+      className="group fixed bottom-7 right-7 z-50 inline-flex items-center justify-center sm:bottom-8 sm:right-8"
     >
       <span
         className="pointer-events-none absolute bottom-[calc(100%+12px)] right-0 z-10 hidden rounded-xl border border-white/15 bg-[rgba(8,18,48,0.96)] px-3.5 py-2 text-xs font-semibold tracking-wide text-white/90 opacity-0 shadow-[0_20px_50px_-20px_rgba(2,6,23,0.85)] backdrop-blur-xl transition-opacity duration-300 group-hover:opacity-100 md:block"
         role="tooltip"
       >
         Quick Action
-      </span>
-
-      <span className="pointer-events-none hidden rounded-full border border-white/12 bg-[rgba(8,20,52,0.88)] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.28em] text-white/88 shadow-[0_16px_40px_-24px_rgba(15,23,42,0.55)] backdrop-blur-xl transition-all duration-300 group-hover:-translate-x-1 group-hover:border-[hsl(var(--accent)/0.28)] lg:inline-flex">
-        Enquire about a property
       </span>
 
       <span className="relative flex h-14 w-14 shrink-0 items-center justify-center">

@@ -621,7 +621,11 @@ const Admin = () => {
               Add, edit, and publish listings from one panel. Changes here sync to the public website through Supabase.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <button type="button" onClick={resetForm} className="btn-accent inline-flex items-center gap-2">
+              <button
+                type="button"
+                onClick={resetForm}
+                className="btn-accent inline-flex min-w-[160px] items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm"
+              >
                 <HousePlus className="h-4 w-4" />
                 New Listing
               </button>
@@ -780,25 +784,27 @@ const Admin = () => {
                                 ) : null}
                               </div>
                             </div>
-                            <div className="absolute inset-x-4 bottom-4 flex flex-wrap items-end justify-between gap-3">
-                              <div className="rounded-2xl border border-white/10 bg-[linear-gradient(135deg,hsl(var(--charcoal)/0.9),hsl(var(--charcoal-light)/0.7),hsl(var(--accent)/0.15))] px-4 py-3 backdrop-blur-md shadow-[0_24px_50px_-28px_hsl(var(--accent)/0.7)]">
+                            <div className="absolute inset-x-4 bottom-4 flex flex-col items-stretch gap-2 sm:flex-row sm:items-end sm:justify-between sm:gap-3">
+                              <div className="min-w-0 rounded-2xl border border-white/10 bg-[linear-gradient(135deg,hsl(var(--charcoal)/0.9),hsl(var(--charcoal-light)/0.7),hsl(var(--accent)/0.15))] px-4 py-3 backdrop-blur-md shadow-[0_24px_50px_-28px_hsl(var(--accent)/0.7)] sm:max-w-[65%]">
                                 <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-white/65">
                                   Listing Snapshot
                                 </p>
                                 <div className="mt-2 flex flex-wrap gap-2">
-                                  <span className="rounded-full border border-accent/20 bg-accent/15 px-3 py-1 text-[11px] font-medium text-white">
+                                  <span className="max-w-full truncate rounded-full border border-accent/20 bg-accent/15 px-3 py-1 text-[11px] font-medium text-white">
                                     {property.status}
                                   </span>
-                                  <span className="rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] font-medium text-white/90">
+                                  <span className="max-w-full truncate rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] font-medium text-white/90">
                                     {property.area}
                                   </span>
                                 </div>
                               </div>
-                              <div className="rounded-2xl border border-white/10 bg-primary/[0.45] px-4 py-3 text-right backdrop-blur-md">
+                              <div className="w-full rounded-2xl border border-white/10 bg-primary/[0.45] px-4 py-3 text-left backdrop-blur-md sm:w-auto sm:min-w-[190px] sm:text-right">
                                 <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/70">
                                   Asking Price
                                 </p>
-                                <p className="mt-1 font-heading text-2xl font-bold text-white">{property.price}</p>
+                                <p className="mt-1 break-words font-heading text-xl font-bold leading-tight text-white sm:text-2xl">
+                                  {property.price}
+                                </p>
                               </div>
                             </div>
                           </div>

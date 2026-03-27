@@ -424,7 +424,8 @@ const Index = () => {
             </div>
           </AnimatedSection>
 
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          {/* Journal cards: keep cards comfortably wide on tablet */}
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {blogPosts.slice(0, 3).map((post, index) => (
               <AnimatedSection key={post.slug} delay={index * 0.06}>
                 <motion.div
@@ -438,9 +439,13 @@ const Index = () => {
                   className="h-full"
                 >
                   <Link to={`/blog/${post.slug}`} className="group flex h-full">
-                    <article className="flex h-[420px] w-full flex-col overflow-hidden rounded-[30px] border border-[hsl(var(--line))] bg-white shadow-[0_24px_60px_-38px_rgba(15,23,42,0.28)] transition-transform duration-300 hover:-translate-y-1">
-                      <div className="relative h-[180px] w-full shrink-0 overflow-hidden">
-                        <img src={post.image} alt={post.title} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
+                    <article className="flex h-[400px] w-full flex-col overflow-hidden rounded-[30px] border border-[hsl(var(--line))] bg-white shadow-[0_24px_60px_-38px_rgba(15,23,42,0.28)] transition-transform duration-300 hover:-translate-y-1 hover:shadow-[0_34px_78px_-46px_rgba(15,23,42,0.38)] lg:h-[460px]">
+                      <div className="relative h-[170px] w-full shrink-0 overflow-hidden lg:h-[215px]">
+                        <img
+                          src={post.image}
+                          alt={post.title}
+                          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                        />
                         <div className="absolute inset-0 bg-gradient-to-t from-[rgba(2,6,23,0.78)] via-transparent to-transparent" />
                         <div className="absolute left-4 top-4 rounded-full border border-white/18 bg-white/12 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-white">
                           {post.category}
@@ -457,7 +462,7 @@ const Index = () => {
                           <h3 className="mt-3 line-clamp-3 font-heading text-xl font-semibold leading-snug tracking-[-0.03em] text-foreground transition-colors group-hover:text-[hsl(var(--accent))] md:text-[22px] md:leading-tight">
                             {post.title}
                           </h3>
-                          <p className="mt-3 line-clamp-3 text-sm leading-7 text-muted-foreground">{post.excerpt}</p>
+                          <p className="mt-3 line-clamp-2 text-sm leading-7 text-muted-foreground">{post.excerpt}</p>
                         </div>
                         <div className="shrink-0 pt-4">
                           <span className="inline-flex items-center gap-2 text-sm font-semibold text-[hsl(var(--accent))]">

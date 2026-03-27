@@ -39,7 +39,7 @@ export const propertyCategories = ["Residential", "Commercial", "Investment", "L
 export const propertyListingTypes = ["For Sale", "For Rent"] as const;
 export const propertyStatuses = ["For Sale", "For Rent", "Reserved", "Sold"] as const;
 
-/** Programmatic dummy catalogue (each `UK_LOCATIONS` entry × 6 sectors × 6 rows: 2× buy + 2× rent + 2× sold). See `dummyStoreProperties.ts`. */
+/** Seed catalogue used by the app; currently sourced from real listing rows in `dummyStoreProperties.ts`. */
 export const properties: Property[] = buildStorePropertyCatalog();
 
 export function getPropertyBySlug(slug: string): Property | undefined {

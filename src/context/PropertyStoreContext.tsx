@@ -37,6 +37,29 @@ function uniqueLines(items: string[]): string[] {
 const fallbackImage = seedProperties[0]?.image || "";
 const defaultProperties = seedProperties.map((property) => hydrateProperty(property, fallbackImage));
 
+function isDemoCatalogPropertySlug(slug: string | undefined): boolean {
+  // Old generator slugs looked like `catalog-${seq}-...`
+  return Boolean(slug && slug.startsWith("catalog-"));
+}
+
+function mergeWithSeedProperties(items: Property[]): Property[] {
+  const bySlug = new Map<string, Property>();
+
+  for (const p of items) {
+    if (!p.slug) continue;
+    bySlug.set(p.slug, p);
+  }
+
+  for (const seed of defaultProperties) {
+    if (!seed.slug) continue;
+    if (!bySlug.has(seed.slug)) {
+      bySlug.set(seed.slug, seed);
+    }
+  }
+
+  return Array.from(bySlug.values());
+}
+
 function readStoredProperties(): Property[] {
   if (typeof window === "undefined") {
     return defaultProperties;
@@ -53,9 +76,10 @@ function readStoredProperties(): Property[] {
       return defaultProperties;
     }
 
-    return parsedValue.map((property, index) =>
-      hydrateProperty(property as Property, seedProperties[index]?.image || fallbackImage),
-    );
+    const hydrated = parsedValue.map((property) => hydrateProperty(property as Property, fallbackImage));
+    // Remove legacy demo catalog rows even if they are cached in localStorage.
+    const filtered = hydrated.filter((p) => !isDemoCatalogPropertySlug(p.slug));
+    return mergeWithSeedProperties(filtered.length ? filtered : defaultProperties);
   } catch {
     return defaultProperties;
   }
@@ -76,7 +100,9 @@ async function fetchRemoteProperties(): Promise<Property[]> {
     throw error;
   }
 
-  return (data as PropertyRecord[]).map((record) => propertyRecordToModel(record, fallbackImage));
+  const hydrated = (data as PropertyRecord[]).map((record) => propertyRecordToModel(record, fallbackImage));
+  const filtered = hydrated.filter((p) => !isDemoCatalogPropertySlug(p.slug));
+  return mergeWithSeedProperties(filtered);
 }
 
 async function seedRemoteProperties(): Promise<void> {

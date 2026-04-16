@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowRight, Calendar, Clock3, Sparkles, Tag } from "lucide-r
 import { Link, Navigate, useParams } from "react-router-dom";
 import AnimatedSection from "@/components/AnimatedSection";
 import CTABanner from "@/components/CTABanner";
+import { siteDocumentTitle } from "@/content/site";
 import { blogPosts, getPostBySlug, getRelatedPosts } from "@/data/blogPosts";
 import { useDocumentTitle } from "@/lib/useDocumentTitle";
 
@@ -16,7 +17,7 @@ const BlogPost = () => {
   const post = slug ? getPostBySlug(slug) : undefined;
   const relatedPosts = post ? getRelatedPosts(post.slug) : [];
 
-  useDocumentTitle(post ? `Sav Zaman — ${post.title}` : "Sav Zaman — Journal");
+  useDocumentTitle(post ? `${siteDocumentTitle} — ${post.title}` : `${siteDocumentTitle} — Journal`);
 
   if (!post) {
     return <Navigate to="/blog" replace />;

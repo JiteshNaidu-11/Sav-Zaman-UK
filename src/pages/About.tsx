@@ -1,7 +1,8 @@
 import { Compass, Eye, Quote, ShieldCheck, TimerReset } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
 import CTABanner from "@/components/CTABanner";
-import { founderProfile, performanceSignals, values } from "@/content/site";
+import animatedBrandImage from "@/assets/animated-brand.png";
+import { founderProfile, performanceSignals, siteDocumentTitle, values } from "@/content/site";
 import { useDocumentTitle } from "@/lib/useDocumentTitle";
 import { cn } from "@/lib/utils";
 
@@ -57,7 +58,7 @@ function SectionRule() {
 }
 
 const About = () => {
-  useDocumentTitle("Sav Zaman — About");
+  useDocumentTitle(`${siteDocumentTitle} — About`);
   return (
     <main className="overflow-hidden bg-[#F4F6FA]">
       {/* 1 — Hero */}
@@ -194,8 +195,14 @@ const About = () => {
                 <div className="pointer-events-none absolute -bottom-12 -left-12 h-44 w-44 rounded-full bg-teal-500/10 blur-3xl" />
                 <div className="relative">
                   <p className={kickerDark}>Founder</p>
-                  <div className="mt-6 flex h-24 w-24 items-center justify-center rounded-2xl border border-white/15 bg-white/10 font-heading text-2xl font-semibold tracking-[0.2em] text-white">
-                    SZ
+                  <div className="mt-6 h-24 w-24 shrink-0 overflow-hidden rounded-2xl border border-white/15 bg-white/10">
+                    <img
+                      src={animatedBrandImage}
+                      alt={founderProfile.name}
+                      loading="lazy"
+                      decoding="async"
+                      className="h-full w-full object-cover object-top"
+                    />
                   </div>
                   <h2 className="mt-6 font-heading text-3xl font-semibold tracking-[-0.02em] lg:text-4xl">{founderProfile.name}</h2>
                   <p className="mt-2 text-sm font-medium uppercase tracking-widest text-blue-200/90">{founderProfile.role}</p>

@@ -165,7 +165,7 @@ export function GuidedFinder({ open, onClose }: Props) {
         timeline: null,
       });
     })().catch((e) => {
-      console.error(e);
+      if (import.meta.env.DEV) console.error(e);
       if (cancelled) return;
       setResultError("Could not load matches right now.");
       setResultMatches([]);

@@ -13,7 +13,7 @@ import { PropertyMapSection } from "@/components/property-detail/PropertyMapSect
 import { SimilarProperties } from "@/components/property-detail/SimilarProperties";
 import CTABanner from "@/components/CTABanner";
 import PropertyInquiryDialog, { type PropertyInquiryFormState } from "@/components/PropertyInquiryDialog";
-import { siteContent } from "@/content/site";
+import { siteContent, siteDocumentTitle } from "@/content/site";
 import { useEnquiryModal } from "@/context/EnquiryModalContext";
 import { usePropertyStore } from "@/context/PropertyStoreContext";
 import { propertyDetailPath } from "@/data/properties";
@@ -76,7 +76,11 @@ const PropertyDetail = () => {
   const property = Number.isFinite(numericId) ? getPropertyById(numericId) : getPropertyBySlug(routeParam);
 
   useDocumentTitle(
-    property ? `Sav Zaman — ${property.title}` : loading ? "Sav Zaman — Property" : "Sav Zaman — Properties",
+    property
+      ? `${siteDocumentTitle} — ${property.title}`
+      : loading
+        ? `${siteDocumentTitle} — Property`
+        : `${siteDocumentTitle} — Properties`,
   );
 
   const [callbackDialogOpen, setCallbackDialogOpen] = useState(false);

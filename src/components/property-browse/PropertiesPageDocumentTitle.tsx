@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { siteDocumentTitle } from "@/content/site";
 import { usePropertyBrowse } from "@/context/PropertyBrowseContext";
 
 /** Sets `document.title` from active browse filters (footer / URL deep links). */
@@ -26,7 +27,8 @@ export function PropertiesPageDocumentTitle() {
       segments.push("Nationwide");
     }
 
-    document.title = segments.length > 0 ? `Sav Zaman — ${segments.join(" · ")}` : "Sav Zaman — Properties";
+    document.title =
+      segments.length > 0 ? `${siteDocumentTitle} — ${segments.join(" · ")}` : `${siteDocumentTitle} — Properties`;
 
     return () => {
       document.title = prev;

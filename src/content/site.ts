@@ -1,9 +1,16 @@
+/** Default `<title>` — keep in sync with `index.html`. */
+export const siteDocumentTitle = "Sav Zaman | The Property Man";
+
+/** Primary meta description — keep in sync with `index.html`. */
+export const siteMetaDescription =
+  "Explore premium residential and commercial properties across the UK with Sav Zaman.";
+
 export const siteContent = {
   name: "Sav Zaman",
   shortName: "Sav Zaman",
   tagline: "Premium property advisory and listings.",
   description:
-    "Sav Zaman presents residential, commercial, and investment opportunities through a premium, structured real-estate experience.",
+    "Explore premium residential and commercial properties across the UK with Sav Zaman.",
   primaryCta: "Book A Property Consultation",
   secondaryCta: "Explore Properties",
   email: "hello@savzamanuk.com",

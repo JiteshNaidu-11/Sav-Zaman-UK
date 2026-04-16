@@ -2,7 +2,7 @@ import { ArrowRight, Building2, ClipboardList, Megaphone, MessageSquare, Trendin
 import { Link } from "react-router-dom";
 import AnimatedSection from "@/components/AnimatedSection";
 import CTABanner from "@/components/CTABanner";
-import { processSteps, siteContent } from "@/content/site";
+import { processSteps, siteContent, siteDocumentTitle } from "@/content/site";
 import { useDocumentTitle } from "@/lib/useDocumentTitle";
 import { cn } from "@/lib/utils";
 import property1 from "@/assets/property-1.jpg";
@@ -94,7 +94,7 @@ const detailBlocks = [
 const cardHover = "transition-all duration-300 hover:-translate-y-1 hover:shadow-xl";
 
 const Services = () => {
-  useDocumentTitle("Sav Zaman — Services");
+  useDocumentTitle(`${siteDocumentTitle} — Services`);
   return (
     <main className="overflow-hidden bg-[#F4F6FA]">
       {/* 1 — Hero */}

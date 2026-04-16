@@ -195,7 +195,7 @@ export function StickyPropertyBrowseDock() {
             {resultCount === 1 ? "property" : "properties"} found
             {isFallbackResults ? (
               <span className="ml-2 rounded-full bg-amber-500/20 px-2 py-0.5 text-[11px] font-medium text-amber-100">
-                demo sample
+                sample matches
               </span>
             ) : null}
             <span className="mx-2 text-white/35" aria-hidden>

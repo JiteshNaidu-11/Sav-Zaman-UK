@@ -2,7 +2,7 @@ import { MapPin, MessageCircle, Phone, Mail } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
 import CTABanner from "@/components/CTABanner";
 import { EnquiryFormBody } from "@/components/EnquiryFormBody";
-import { contactHighlights, siteContent } from "@/content/site";
+import { contactHighlights, siteContent, siteDocumentTitle } from "@/content/site";
 import { useDocumentTitle } from "@/lib/useDocumentTitle";
 
 function normalizeWhatsAppNumber(value: string): string {
@@ -12,7 +12,7 @@ function normalizeWhatsAppNumber(value: string): string {
 const mapEmbedSrc = `https://maps.google.com/maps?q=${encodeURIComponent(siteContent.address)}&output=embed`;
 
 const Contact = () => {
-  useDocumentTitle("Sav Zaman — Contact");
+  useDocumentTitle(`${siteDocumentTitle} — Contact`);
   const normalized = normalizeWhatsAppNumber(siteContent.whatsappNumber ?? siteContent.phone);
   const whatsappHref = normalized ? `https://wa.me/${normalized}` : `mailto:${siteContent.email}`;
 

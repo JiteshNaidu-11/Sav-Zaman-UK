@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { ArrowRight, Calendar, Clock3 } from "lucide-react";
 import { Link, useSearchParams } from "react-router-dom";
-import { useDocumentTitle } from "@/lib/useDocumentTitle";
 import AnimatedSection from "@/components/AnimatedSection";
+import { siteDocumentTitle } from "@/content/site";
+import { useDocumentTitle } from "@/lib/useDocumentTitle";
 import CTABanner from "@/components/CTABanner";
 import { blogPosts, type BlogPost } from "@/data/blogPosts";
 import { cn } from "@/lib/utils";
@@ -67,7 +68,9 @@ const Blog = () => {
   }, [searchParams]);
 
   const pageTitle =
-    activeChip === "All" ? "Sav Zaman — Journal" : `Sav Zaman — Journal · ${activeChip}`;
+    activeChip === "All"
+      ? `${siteDocumentTitle} — Journal`
+      : `${siteDocumentTitle} — Journal · ${activeChip}`;
   useDocumentTitle(pageTitle);
 
   const setChip = (chip: string) => {

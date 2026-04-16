@@ -12,7 +12,6 @@ import {
   TrendingUp,
 } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
-// import Counter from "@/components/Counter";
 import CTABanner from "@/components/CTABanner";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import {
@@ -21,6 +20,7 @@ import {
   faqItems,
   heroHighlights,
   processSteps,
+  siteDocumentTitle,
 } from "@/content/site";
 import { blogPosts } from "@/data/blogPosts";
 import { RightmoveHeroSearch } from "@/components/property-search/RightmoveHeroSearch";
@@ -76,31 +76,6 @@ const valueCards = [
 const serviceIcons = [Compass, Building2, TrendingUp, ShieldCheck];
 const processIcons = [Compass, Sparkles, Building2, ShieldCheck];
 
-/* Stats strip (four cards) — hidden per request
-const stats = [
-  {
-    value: "24h",
-    label: "Response target",
-    note: "Initial follow-up is positioned as fast, visible, and client-facing.",
-  },
-  {
-    value: "360",
-    label: "Advisory coverage",
-    note: "Brief, shortlist, viewings, follow-up, negotiation, and close.",
-  },
-  {
-    value: "18+",
-    label: "Prime UK zones",
-    note: "Coverage across stronger residential and commercial catchments.",
-  },
-  {
-    value: "98%",
-    label: "Presentation ready",
-    note: "Listings staged with gallery, detail page, enquiry, and admin visibility.",
-  },
-] as const;
-*/
-
 const processNotes = [
   "Client brief locked",
   "Sharper opportunities only",
@@ -122,7 +97,7 @@ const journalCardMotion = [
 ] as const;
 
 const Index = () => {
-  useDocumentTitle("Sav Zaman — Prime property advisory & listings");
+  useDocumentTitle(siteDocumentTitle);
   const { openEnquiry } = useEnquiryModal();
   const [heroImageIndex, setHeroImageIndex] = useState(0);
   const heroSlideCount = heroSlides.length;
@@ -232,28 +207,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Stats strip (four cards: 24h, 360, 18+, 98%) — hidden per request
-      <section className="py-16 lg:py-24">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-10">
-            {stats.map((stat, index) => (
-              <AnimatedSection key={stat.label} delay={index * 0.06}>
-                <div className="relative overflow-hidden rounded-[30px] border border-[hsl(var(--line))] bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(241,245,249,0.92))] p-6 shadow-[0_22px_60px_-38px_rgba(15,23,42,0.3)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl lg:p-8">
-                  <div className="absolute inset-x-0 top-0 h-1 bg-[linear-gradient(90deg,rgba(37,99,235,0.95),rgba(125,211,252,0.55))]" />
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.26em] text-[hsl(var(--accent))]">{`0${index + 1}`}</p>
-                  <div className="mt-4 font-heading text-5xl font-semibold tracking-[-0.04em] text-[hsl(var(--primary))]">
-                    <Counter value={stat.value} />
-                  </div>
-                  <p className="mt-4 text-lg font-semibold text-foreground">{stat.label}</p>
-                  <p className="mt-2 text-sm leading-6 text-muted-foreground">{stat.note}</p>
-                </div>
-              </AnimatedSection>
-            ))}
-          </div>
-        </div>
-      </section>
-      */}
-
       <section className="section-padding bg-[hsl(var(--secondary))]">
         <div className="container-custom">
           <AnimatedSection className="max-w-2xl">
@@ -290,7 +243,7 @@ const Index = () => {
             <AnimatedSection className="order-2 flex justify-center lg:order-1 lg:justify-start">
               <img
                 src={animatedBrandImage}
-                alt=""
+                alt="Sav Zaman"
                 loading="lazy"
                 decoding="async"
                 className="h-auto w-full max-w-[280px] object-contain opacity-95 drop-shadow-[0_24px_48px_rgba(0,0,0,0.35)] sm:max-w-[320px] lg:max-w-[340px]"
@@ -419,7 +372,7 @@ const Index = () => {
               Editorial content that adds more depth to the property brand.
             </h2>
             <p className="mt-5 text-base leading-8 text-muted-foreground">
-              The Sav Zaman journal gives the demo a stronger editorial layer around buying, selling, commercial review, and investment thinking.
+              The Sav Zaman journal adds editorial depth around buying, selling, commercial review, and investment thinking.
             </p>
 
             <div className="mt-8 space-y-4">
@@ -463,6 +416,8 @@ const Index = () => {
                         <img
                           src={post.image}
                           alt={post.title}
+                          loading="lazy"
+                          decoding="async"
                           className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-[rgba(2,6,23,0.78)] via-transparent to-transparent" />
@@ -508,7 +463,7 @@ const Index = () => {
               Answers that make the property journey easier to understand.
             </h2>
             <p className="mt-5 text-base leading-8 text-white/70">
-              This section gives the homepage more credibility and helps clients understand the listing flow, advisory model, and admin-backed structure.
+              Practical answers about how we work with buyers, sellers, and investors—from first browse to serious enquiry.
             </p>
 
             <div className="mt-8 rounded-[28px] border border-white/10 bg-white/6 p-6 backdrop-blur-xl">

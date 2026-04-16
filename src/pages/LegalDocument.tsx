@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
+import { siteDocumentTitle } from "@/content/site";
 import { useDocumentTitle } from "@/lib/useDocumentTitle";
 
 const DOCS = {
@@ -26,7 +27,7 @@ type Props = { slug: LegalSlug };
 
 const LegalDocument = ({ slug }: Props) => {
   const doc = DOCS[slug];
-  useDocumentTitle(`Sav Zaman — ${doc.title}`);
+  useDocumentTitle(`${siteDocumentTitle} — ${doc.title}`);
 
   return (
     <main className="mx-auto max-w-2xl px-6 py-16 md:py-24">

@@ -1,5 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { ArrowLeft, MapPin, Phone } from "lucide-react";
+import { siteDocumentTitle } from "@/content/site";
 import { getSearchCatalogBySlug } from "@/data/searchCatalogProperties";
 import { useDocumentTitle } from "@/lib/useDocumentTitle";
 
@@ -7,7 +8,9 @@ const SearchListingDetailPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const property = slug ? getSearchCatalogBySlug(slug) : undefined;
 
-  useDocumentTitle(property ? `Sav Zaman — ${property.title}` : "Sav Zaman — Property");
+  useDocumentTitle(
+    property ? `${siteDocumentTitle} — ${property.title}` : `${siteDocumentTitle} — Property`,
+  );
 
   if (!property) {
     return (

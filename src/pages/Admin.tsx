@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { type Session } from "@supabase/supabase-js";
 import { motion } from "framer-motion";
 import {
@@ -19,6 +19,7 @@ import {
   Search,
   Sparkles,
   Star,
+  TableProperties,
   Trash2,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -198,7 +199,8 @@ async function uploadDataUrlImage(dataUrl: string): Promise<string> {
 }
 
 const Admin = () => {
-  const { properties, loading, upsertProperty, deleteProperty, resetProperties } = usePropertyStore();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { properties, loading, upsertProperty, deleteProperty, resetProperties, refreshProperties } = usePropertyStore();
   const [query, setQuery] = useState("");
   const [editingSlug, setEditingSlug] = useState<string | null>(null);
   const [form, setForm] = useState<PropertyFormState>(createEmptyForm);
@@ -254,6 +256,24 @@ const Admin = () => {
     document.addEventListener("mousedown", handlePointerDown);
     return () => document.removeEventListener("mousedown", handlePointerDown);
   }, []);
+
+  useEffect(() => {
+    const editSlug = searchParams.get("edit");
+    if (!editSlug || loading) return;
+
+    const property = properties.find((p) => p.slug === editSlug);
+    if (property) {
+      setEditingSlug(property.slug);
+      setForm(propertyToForm(property));
+      setSearchParams({}, { replace: true });
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
+    if (!loading && properties.length > 0) {
+      setSearchParams({}, { replace: true });
+    }
+  }, [searchParams, properties, loading, setSearchParams]);
 
   const filteredProperties = properties.filter((property) => {
     const searchValue = query.toLowerCase();
@@ -650,6 +670,13 @@ const Admin = () => {
               >
                 <Mail className="h-4 w-4 text-accent" />
                 Client Queries
+              </Link>
+              <Link
+                to="/admin/records"
+                className="inline-flex items-center gap-2 rounded-xl border border-white/20 px-5 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-white/10"
+              >
+                <TableProperties className="h-4 w-4 text-accent" />
+                Property Records
               </Link>
               <button
                 type="button"
@@ -1233,10 +1260,18 @@ const Admin = () => {
 	                        <button
 	                          type="submit"
 	                          disabled={isSaving || isProcessingPrimaryImage || isProcessingGalleryImages}
-	                          className="btn-accent inline-flex items-center justify-center gap-2 disabled:cursor-not-allowed disabled:opacity-60"
+	                          className="btn-accent inline-flex min-w-[200px] shrink-0 items-center justify-center gap-2.5 rounded-xl px-7 py-3.5 text-sm font-semibold tracking-tight disabled:cursor-not-allowed disabled:opacity-60"
 	                        >
-	                          {isSaving ? (editingSlug ? "Updating..." : "Publishing...") : editingSlug ? "Update Listing" : "Publish Listing"}
-	                          <ArrowRight className="h-4 w-4" />
+	                          <span className="whitespace-nowrap">
+	                            {isSaving
+	                              ? editingSlug
+	                                ? "Updating..."
+	                                : "Publishing..."
+	                              : editingSlug
+	                                ? "Update Listing"
+	                                : "Publish Listing"}
+	                          </span>
+	                          <ArrowRight className="h-4 w-4 shrink-0" aria-hidden />
 	                        </button>
 	                      </div>
 	                    </div>

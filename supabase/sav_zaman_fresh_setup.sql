@@ -36,6 +36,12 @@ create table public.properties (
   image_url text not null,
   gallery_urls text[] not null default '{}'::text[],
   video_embed_url text,
+  record_status text not null default 'approved' check (record_status in ('pending', 'approved')),
+  is_upcoming boolean not null default false,
+  show_home_rental boolean not null default false,
+  hidden_from_public boolean not null default false,
+  created_by uuid references auth.users(id) on delete set null,
+  created_by_label text,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -91,12 +97,21 @@ alter table public.properties enable row level security;
 alter table public.lead_inquiries enable row level security;
 alter table public.property_inquiries enable row level security;
 
--- Listings: visible to everyone; editable only when signed in (use your admin Auth user in the dashboard).
+-- Listings: visitors only see approved + visible rows; signed-in admin sees all rows.
 drop policy if exists "properties_select_public" on public.properties;
-create policy "properties_select_public"
+drop policy if exists "properties_select_anon" on public.properties;
+drop policy if exists "properties_select_authenticated" on public.properties;
+
+create policy "properties_select_anon"
 on public.properties
 for select
-to anon, authenticated
+to anon
+using (record_status = 'approved' and not hidden_from_public);
+
+create policy "properties_select_authenticated"
+on public.properties
+for select
+to authenticated
 using (true);
 
 drop policy if exists "properties_write_authenticated" on public.properties;

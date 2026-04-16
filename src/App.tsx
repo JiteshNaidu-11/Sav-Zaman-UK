@@ -22,6 +22,7 @@ import BlogPost from "./pages/BlogPost";
 import Admin from "./pages/Admin";
 import AdminInquiries from "./pages/AdminInquiries";
 import AdminLeads from "./pages/admin/leads";
+import PropertyRecordsPage from "./pages/admin/PropertyRecordsPage";
 import NotFound from "./pages/NotFound";
 import LegalDocument from "./pages/LegalDocument";
 import SearchListingDetailPage from "./pages/SearchListingDetailPage";
@@ -53,6 +54,7 @@ const App = () => (
               <Route path="/terms-of-use" element={<LegalDocument slug="terms-of-use" />} />
               <Route path="/cookies" element={<LegalDocument slug="cookies" />} />
               <Route path="/admin" element={<Admin />} />
+              <Route path="/admin/records" element={<PropertyRecordsPage />} />
               <Route path="/admin/inquiries" element={<AdminInquiries />} />
               <Route path="/admin/leads" element={<AdminLeads />} />
               <Route path="*" element={<NotFound />} />

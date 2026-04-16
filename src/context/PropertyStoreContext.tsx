@@ -236,6 +236,29 @@ export const PropertyStoreProvider = ({ children }: { children: ReactNode }) => 
     const uniqueSlug = ensureUniquePropertySlug(property.slug || property.title, properties, previousSlug);
     const record = propertyModelToRecord({ ...property, slug: uniqueSlug });
 
+    const { data: existingRow } = await supabase
+      .from("properties")
+      .select("created_by, created_by_label, record_status, is_upcoming, show_home_rental, hidden_from_public")
+      .eq("slug", previousSlug ?? uniqueSlug)
+      .maybeSingle();
+
+    if (existingRow) {
+      const row = existingRow as Record<string, unknown>;
+      if (row.created_by) record.created_by = row.created_by as string;
+      if (row.created_by_label != null) record.created_by_label = row.created_by_label as string;
+      if (row.record_status != null) record.record_status = row.record_status as string;
+      record.is_upcoming = Boolean(row.is_upcoming);
+      record.show_home_rental = Boolean(row.show_home_rental);
+      record.hidden_from_public = Boolean(row.hidden_from_public);
+    } else {
+      const { data: userData } = await supabase.auth.getUser();
+      const user = userData.user;
+      if (user) {
+        record.created_by = user.id;
+        record.created_by_label = user.email ?? (user.user_metadata?.name as string | undefined) ?? null;
+      }
+    }
+
     if (previousSlug && previousSlug !== uniqueSlug) {
       const { error } = await supabase.from("properties").update(record).eq("slug", previousSlug);
       if (error) throw error;

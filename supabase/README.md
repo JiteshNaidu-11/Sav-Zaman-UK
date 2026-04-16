@@ -7,11 +7,15 @@
 
 This creates:
 
-- **`properties`** — columns aligned with `src/lib/propertyRecords.ts` (admin listing form).
+- **`properties`** — columns aligned with `src/lib/propertyRecords.ts` (admin listing form), plus **Property Records** fields: `record_status` (pending/approved), `is_upcoming`, `show_home_rental`, `hidden_from_public`, `created_by`, `created_by_label`.
 - **`lead_inquiries`** — contact / callback forms (`EnquiryFormBody`, `PropertyDetail`).
 - **`property_inquiries`** — Guided Property Finder (`src/services/leadService.ts`).
-- **RLS** so **everyone can read listings**; only **signed-in** users can create/update/delete listings (use your admin account in the Admin panel).
+- **RLS**: anonymous visitors only see rows where **`record_status = 'approved'`** and **`hidden_from_public = false`**. Signed-in admins see **all** rows (dashboard + Property Records table). Only authenticated users can insert/update/delete listings.
 - **`property-images`** storage bucket and policies for uploads from the admin UI.
+
+### Already ran an older `sav_zaman_fresh_setup.sql`?
+
+Run **`add_property_records_columns.sql`** once to add the Property Records columns and update RLS.
 
 ## After running the script
 

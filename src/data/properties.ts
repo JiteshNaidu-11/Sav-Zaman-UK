@@ -26,6 +26,14 @@ export interface Property {
   overview: string;
   amenities: string[];
   status: string;
+  /** Admin workflow (separate from marketing `status`). */
+  recordStatus?: "pending" | "approved";
+  isUpcoming?: boolean;
+  /** Highlight on home “rental” placements when you use that section. */
+  homeRental?: boolean;
+  /** When true, hidden from anonymous visitors (admin can still see). */
+  hiddenFromPublic?: boolean;
+  createdByLabel?: string;
   featured?: boolean;
   heroFeatured?: boolean;
   /** New-build / development-led listing (footer “New Developments” deep links). */

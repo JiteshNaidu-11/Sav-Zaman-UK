@@ -3,12 +3,13 @@ import { ReactNode } from "react";
 
 interface AnimatedSectionProps {
   children: ReactNode;
+  id?: string;
   className?: string;
   delay?: number;
   direction?: "up" | "down" | "left" | "right";
 }
 
-const AnimatedSection = ({ children, className = "", delay = 0, direction = "up" }: AnimatedSectionProps) => {
+const AnimatedSection = ({ children, id, className = "", delay = 0, direction = "up" }: AnimatedSectionProps) => {
   const directionMap = {
     up: { y: 40, x: 0 },
     down: { y: -40, x: 0 },
@@ -18,6 +19,7 @@ const AnimatedSection = ({ children, className = "", delay = 0, direction = "up"
 
   return (
     <motion.div
+      id={id}
       initial={{ opacity: 0, ...directionMap[direction] }}
       whileInView={{ opacity: 1, y: 0, x: 0 }}
       viewport={{ once: true, margin: "-50px" }}

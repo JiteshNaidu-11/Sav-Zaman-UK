@@ -19,6 +19,12 @@ export interface PropertyRecord {
   overview: string;
   amenities: string[] | null;
   status: string;
+  record_status?: string | null;
+  is_upcoming?: boolean | null;
+  show_home_rental?: boolean | null;
+  hidden_from_public?: boolean | null;
+  created_by?: string | null;
+  created_by_label?: string | null;
   featured: boolean | null;
   hero_featured?: boolean | null;
   image_url: string;
@@ -64,6 +70,11 @@ export function hydrateProperty(property: Property, fallbackImage: string): Prop
     overview: property.overview?.trim() || "Presented by Sav Zaman.",
     amenities: amenities.length ? amenities : ["Presented by Sav Zaman."],
     status: property.status?.trim() || "For Sale",
+    recordStatus: property.recordStatus === "pending" ? "pending" : "approved",
+    isUpcoming: Boolean(property.isUpcoming),
+    homeRental: Boolean(property.homeRental),
+    hiddenFromPublic: Boolean(property.hiddenFromPublic),
+    createdByLabel: property.createdByLabel?.trim() || undefined,
     featured: Boolean(property.featured),
     heroFeatured: Boolean(property.heroFeatured),
     coordinates: property.coordinates,
@@ -89,6 +100,12 @@ export function propertyRecordToModel(record: PropertyRecord, fallbackImage: str
       overview: record.overview,
       amenities: record.amenities ?? [],
       status: record.status,
+      recordStatus: record.record_status === "pending" ? "pending" : "approved",
+      isUpcoming: Boolean(record.is_upcoming),
+      homeRental: Boolean(record.show_home_rental),
+      hiddenFromPublic: Boolean(record.hidden_from_public),
+      createdByLabel: record.created_by_label ?? undefined,
+      listedAt: record.created_at,
       featured: Boolean(record.featured),
       heroFeatured: Boolean(record.hero_featured),
     },
@@ -97,6 +114,7 @@ export function propertyRecordToModel(record: PropertyRecord, fallbackImage: str
 }
 
 export function propertyModelToRecord(property: Property): PropertyRecord {
+  const recordStatus = property.recordStatus === "pending" ? "pending" : "approved";
   return {
     slug: createPropertySlug(property.slug || property.title),
     title: property.title.trim(),
@@ -111,6 +129,10 @@ export function propertyModelToRecord(property: Property): PropertyRecord {
     overview: property.overview.trim(),
     amenities: uniqueStrings(property.amenities ?? []),
     status: property.status.trim(),
+    record_status: recordStatus,
+    is_upcoming: Boolean(property.isUpcoming),
+    show_home_rental: Boolean(property.homeRental),
+    hidden_from_public: Boolean(property.hiddenFromPublic),
     featured: Boolean(property.featured),
     hero_featured: Boolean(property.heroFeatured),
     image_url: property.image.trim(),

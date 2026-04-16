@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUpRight, BotMessageSquare, ExternalLink, MessageCircle, Search, X } from "lucide-react";
+import assistantAvatar from "@/assets/animated-brand.png";
 import { useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { siteContent } from "@/content/site";
@@ -163,17 +164,25 @@ export function WebsiteAssistantModal({ open, onClose, onOpenFinder }: Props) {
           className={modalBottomClass}
           role="dialog"
           aria-modal="false"
-          aria-label="Sav Zaman Assistant"
+          aria-label="sav zaman's assistant"
         >
           <div className="overflow-hidden rounded-2xl border border-white/10 bg-[rgba(8,18,48,0.92)] shadow-[0_32px_80px_-42px_rgba(2,6,23,0.9)] backdrop-blur-2xl">
             <div className="flex items-start justify-between gap-4 border-b border-white/10 px-4 py-3">
               <div className="min-w-0">
                 <div className="flex items-center gap-2">
-                  <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-white/10 text-white">
-                    <BotMessageSquare className="h-5 w-5" aria-hidden />
+                  <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white/10 ring-2 ring-white/20">
+                    <img
+                      src={assistantAvatar}
+                      alt=""
+                      width={36}
+                      height={36}
+                      loading="lazy"
+                      decoding="async"
+                      className="h-full w-full object-cover"
+                    />
                   </span>
                   <div className="min-w-0">
-                    <p className="truncate text-sm font-semibold text-white">Sav Zaman Assistant</p>
+                    <p className="truncate text-sm font-semibold text-white">sav zaman&apos;s assistant</p>
                     <p className="truncate text-xs text-white/65">Website guidance + fast actions</p>
                   </div>
                 </div>

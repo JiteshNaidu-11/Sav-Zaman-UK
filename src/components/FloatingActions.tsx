@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
-import { ArrowUpRight, BotMessageSquare } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
+import assistantAvatar from "@/assets/animated-brand.png";
 import { GuidedFinder } from "@/components/chatbot/GuidedFinder";
 import { WebsiteAssistantModal } from "@/components/chatbot/WebsiteAssistantModal";
 import { siteContent } from "@/content/site";
@@ -98,16 +99,26 @@ export function FloatingActions() {
           type="button"
           onClick={() => setAssistantOpen((v) => !v)}
           className="group relative inline-flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-r from-blue-600 to-teal-500 text-white shadow-[0_22px_54px_-34px_rgba(0,0,0,0.55)] transition will-change-transform hover:scale-[1.05] focus:outline-none focus:ring-2 focus:ring-white/30 sm:h-14 sm:w-14 fab-pulse"
-          aria-label="Open guided property finder"
-          title="Open guided property finder"
+          aria-label="Open sav zaman's assistant"
+          title="Open sav zaman's assistant"
         >
           <span
             role="tooltip"
             className="pointer-events-none absolute right-[calc(100%+12px)] top-1/2 hidden -translate-y-1/2 whitespace-nowrap rounded-xl border border-white/10 bg-[rgba(8,18,48,0.92)] px-3 py-2 text-xs font-semibold text-white/90 shadow-[0_22px_60px_-30px_rgba(2,6,23,0.85)] backdrop-blur-xl opacity-0 transition-opacity duration-200 group-hover:opacity-100 md:block"
           >
-            Sav Zaman Assistant
+            sav zaman&apos;s assistant
           </span>
-          <BotMessageSquare className="h-6 w-6" aria-hidden />
+          <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white/15 ring-2 ring-white/30 sm:h-12 sm:w-12">
+            <img
+              src={assistantAvatar}
+              alt=""
+              width={48}
+              height={48}
+              loading="lazy"
+              decoding="async"
+              className="h-full w-full object-cover"
+            />
+          </span>
         </button>
       </div>
     </>

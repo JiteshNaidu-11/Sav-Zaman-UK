@@ -1,5 +1,6 @@
 import { ArrowRight, Mail, MessageCircle, Phone } from "lucide-react";
 import { siteContent } from "@/content/site";
+import logoImage from "@/assets/logo.image.png";
 
 type Props = {
   onRequestDetails: () => void;
@@ -16,7 +17,7 @@ export function AgentContactCard({ onRequestDetails, onRequestCallback, whatsapp
       <div className="relative">
         <div className="flex items-center gap-3 border-b border-white/10 pb-4">
           <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/15 bg-white/10 p-1.5">
-            <img src="/logo.image.transparent.png" alt="" className="h-full w-full object-contain" />
+            <img src={logoImage} alt="" className="h-full w-full object-contain" />
           </div>
           <div>
             <p className="text-xs font-semibold uppercase tracking-wider text-white/55">Listing agent</p>

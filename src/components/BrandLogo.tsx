@@ -1,4 +1,5 @@
 import { siteContent } from "@/content/site";
+import logoImage from "@/assets/logo.image.png";
 
 type BrandLogoProps = {
   theme?: "light" | "dark";
@@ -42,7 +43,7 @@ const BrandLogo = ({ theme = "light", size = "nav", inlineTagline = false }: Bra
           <span className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(96,165,250,0.35),transparent_58%),linear-gradient(160deg,rgba(255,255,255,0.12),transparent_60%)]" />
           <div className="relative flex h-full w-full items-center justify-center p-1">
             <img
-              src="/logo.image.transparent.png"
+              src={logoImage}
               alt={`${siteContent.name} logo`}
               className="h-full w-full scale-125 object-contain"
             />
@@ -68,7 +69,7 @@ const BrandLogo = ({ theme = "light", size = "nav", inlineTagline = false }: Bra
         <span className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(96,165,250,0.4),transparent_58%),linear-gradient(160deg,rgba(255,255,255,0.16),transparent_60%)]" />
         <div className={`relative flex h-full w-full items-center justify-center ${s.imageWrap}`}>
           <img
-            src="/logo.image.transparent.png"
+            src={logoImage}
             alt={`${siteContent.name} logo`}
             className={`h-full w-full object-contain ${s.imageScale}`}
           />

@@ -34,6 +34,7 @@ import heroImg7 from "@/assets/7.jpg";
 import heroImg8 from "@/assets/8.jpg";
 import heroImg9 from "@/assets/9.jpg";
 import heroImg10 from "@/assets/10.jpg";
+import animatedBrandImage from "@/assets/animated-brand.png";
 import london2 from "@/assets/london-2.jpg";
 import london3 from "@/assets/london 3.jpg";
 import { useDocumentTitle } from "@/lib/useDocumentTitle";
@@ -285,12 +286,27 @@ const Index = () => {
       <section className="section-padding section-dark relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.18),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(96,165,250,0.12),transparent_30%)]" />
         <div className="container-custom relative">
-          <AnimatedSection className="max-w-2xl">
-            <span className="section-kicker text-[hsl(var(--accent-soft))]">Why Sav Zaman</span>
-            <h2 className="mt-4 font-heading text-3xl font-semibold tracking-[-0.03em] text-white md:text-5xl">
-              A sharper UK-facing property experience built for higher-trust discovery.
-            </h2>
-          </AnimatedSection>
+          <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-14">
+            <AnimatedSection className="order-2 flex justify-center lg:order-1 lg:justify-start">
+              <img
+                src={animatedBrandImage}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                className="h-auto w-full max-w-[280px] object-contain opacity-95 drop-shadow-[0_24px_48px_rgba(0,0,0,0.35)] sm:max-w-[320px] lg:max-w-[340px]"
+              />
+            </AnimatedSection>
+            <AnimatedSection className="order-1 max-w-2xl lg:order-2">
+              <span className="section-kicker text-[hsl(var(--accent-soft))]">Why Sav Zaman</span>
+              <h2 className="mt-4 font-heading text-3xl font-semibold tracking-[-0.03em] text-white md:text-5xl">
+                A sharper UK-facing property experience built for higher-trust discovery.
+              </h2>
+              <p className="mt-5 text-base leading-relaxed text-white/70">
+                Clear presentation, structured follow-up, and guidance that respects your time—so you can move with
+                confidence on UK residential and commercial opportunities.
+              </p>
+            </AnimatedSection>
+          </div>
 
           <div className="mt-12 grid gap-5 lg:grid-cols-3">
             {differentiators.map((item, index) => (

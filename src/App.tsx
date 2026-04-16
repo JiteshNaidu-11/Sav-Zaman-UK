@@ -6,7 +6,7 @@ import Navbar from "./components/Navbar";
 import { PropertyBrowseStickyChrome } from "./components/property-browse/PropertyBrowseStickyChrome";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
-import WhatsAppBubble from "./components/WhatsAppBubble";
+import { FloatingActions } from "./components/FloatingActions";
 import { EnquiryModal } from "./components/EnquiryModal";
 import { EnquiryModalProvider } from "./context/EnquiryModalContext";
 import { PropertyBrowseProvider } from "./context/PropertyBrowseContext";
@@ -21,6 +21,7 @@ import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import Admin from "./pages/Admin";
 import AdminInquiries from "./pages/AdminInquiries";
+import AdminLeads from "./pages/admin/leads";
 import NotFound from "./pages/NotFound";
 import LegalDocument from "./pages/LegalDocument";
 import SearchListingDetailPage from "./pages/SearchListingDetailPage";
@@ -53,11 +54,12 @@ const App = () => (
               <Route path="/cookies" element={<LegalDocument slug="cookies" />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="/admin/inquiries" element={<AdminInquiries />} />
+              <Route path="/admin/leads" element={<AdminLeads />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             </div>
           </PropertyBrowseStickyChrome>
-          <WhatsAppBubble />
+          <FloatingActions />
           <Footer />
           <EnquiryModal />
         </div>

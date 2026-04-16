@@ -7,7 +7,7 @@ const SearchListingDetailPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const property = slug ? getSearchCatalogBySlug(slug) : undefined;
 
-  useDocumentTitle(property ? `Sav Zaman UK — ${property.title}` : "Sav Zaman UK — Property");
+  useDocumentTitle(property ? `Sav Zaman — ${property.title}` : "Sav Zaman — Property");
 
   if (!property) {
     return (

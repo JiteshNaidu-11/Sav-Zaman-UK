@@ -16,7 +16,7 @@ const BlogPost = () => {
   const post = slug ? getPostBySlug(slug) : undefined;
   const relatedPosts = post ? getRelatedPosts(post.slug) : [];
 
-  useDocumentTitle(post ? `Sav Zaman UK — ${post.title}` : "Sav Zaman UK — Journal");
+  useDocumentTitle(post ? `Sav Zaman — ${post.title}` : "Sav Zaman — Journal");
 
   if (!post) {
     return <Navigate to="/blog" replace />;
@@ -79,7 +79,7 @@ const BlogPost = () => {
                   <img src={post.image} alt={post.title} className="h-full w-full object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-[rgba(2,6,23,0.92)] via-[rgba(2,6,23,0.12)] to-transparent" />
                   <div className="absolute inset-x-0 bottom-0 p-6">
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/60">Sav Zaman UK Editorial</p>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/60">Sav Zaman Editorial</p>
                     <div className="mt-4 grid gap-3 sm:grid-cols-3">
                       <div className="rounded-[20px] border border-white/10 bg-white/8 px-4 py-4 backdrop-blur-xl">
                         <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/50">Topic</p>

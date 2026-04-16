@@ -13,7 +13,7 @@ export function PropertyDescription({ overview, extraBody }: Props) {
   const longText = useMemo(() => {
     const extra =
       extraBody?.trim() ||
-      "This is a demonstration listing presented in a Rightmove-style layout. Sav Zaman UK can tailor copy, floorplans, and data fields for your live stock. Expect premium photography, structured amenities, and enquiry flows aligned with your advisory process.";
+      "This is a demonstration listing presented in a Rightmove-style layout. Sav Zaman can tailor copy, floorplans, and data fields for your live stock. Expect premium photography, structured amenities, and enquiry flows aligned with your advisory process.";
     return `${overview.trim()}\n\n${extra}`;
   }, [overview, extraBody]);
 

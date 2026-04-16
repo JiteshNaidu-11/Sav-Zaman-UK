@@ -76,7 +76,7 @@ const PropertyDetail = () => {
   const property = Number.isFinite(numericId) ? getPropertyById(numericId) : getPropertyBySlug(routeParam);
 
   useDocumentTitle(
-    property ? `Sav Zaman UK — ${property.title}` : loading ? "Sav Zaman UK — Property" : "Sav Zaman UK — Properties",
+    property ? `Sav Zaman — ${property.title}` : loading ? "Sav Zaman — Property" : "Sav Zaman — Properties",
   );
 
   const [callbackDialogOpen, setCallbackDialogOpen] = useState(false);

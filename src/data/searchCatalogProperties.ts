@@ -104,7 +104,7 @@ function buildCatalog(): SearchCatalogProperty[] {
       sector,
       bedrooms: sector === "Offices" || sector === "Retail" ? 0 : (i % 4) + 1,
       area: `${(i % 8) * 400 + 1200} sq ft`,
-      agent: "Sav Zaman UK",
+      agent: "Sav Zaman",
       image: images[(i - 1) % images.length],
       coordinates: { lat, lng },
       featured: i % 9 === 1,

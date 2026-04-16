@@ -332,7 +332,7 @@ const Admin = () => {
   };
 
   const handleResetListings = async () => {
-    const confirmed = window.confirm("Reset all property listings back to the default Sav Zaman UK data?");
+    const confirmed = window.confirm("Reset all property listings back to the default Sav Zaman data?");
     if (!confirmed) return;
 
     try {
@@ -592,7 +592,7 @@ const Admin = () => {
                   </span>
                   <div className="ml-auto hidden items-center gap-3 md:flex">
                     <span className="h-px w-16 bg-gradient-to-r from-transparent via-accent/90 to-transparent animate-pulse" />
-	                    <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-primary-foreground/55">Sav Zaman UK Admin Portal</p>
+	                    <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-primary-foreground/55">Sav Zaman Admin Portal</p>
 	                  </div>
 	                </div>
 	              </div>
@@ -615,7 +615,7 @@ const Admin = () => {
               Admin Access
             </span>
             <h1 className="mt-5 font-heading text-4xl font-bold text-primary-foreground md:text-5xl">
-              Manage live property listings for Sav Zaman UK
+              Manage live property listings for Sav Zaman
             </h1>
             <p className="mt-4 max-w-2xl text-base leading-relaxed text-primary-foreground/75 md:text-lg">
               Add, edit, and publish listings from one panel. Changes here sync to the public website through Supabase.

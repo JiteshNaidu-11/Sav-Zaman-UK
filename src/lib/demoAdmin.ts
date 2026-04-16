@@ -1,4 +1,4 @@
-const DEMO_ADMIN_SESSION_KEY = "sav-zaman-uk.demo-admin-session";
+const DEMO_ADMIN_SESSION_KEY = "sav-zaman.demo-admin-session";
 
 export const DEMO_ADMIN_EMAIL = "demo@savzamanuk.com";
 export const DEMO_ADMIN_PASSWORD = "savzaman123";

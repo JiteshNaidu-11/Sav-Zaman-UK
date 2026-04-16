@@ -28,7 +28,7 @@ export const blogPosts: BlogPost[] = [
     date: "March 2026",
     category: "Investment",
     excerpt: "Where investors are focusing across London, Manchester and Birmingham.",
-    author: "Sav Zaman UK Research",
+    author: "Sav Zaman Research",
     readTime: "5 min read",
     tags: ["Prime Property", "Investment", "UK Market", "London"],
     body: [
@@ -45,7 +45,7 @@ export const blogPosts: BlogPost[] = [
     category: "Investment",
     excerpt:
       "A clearer framework for reviewing pricing, location quality, holding logic, and buyer fit before moving on a premium opportunity.",
-    author: "Sav Zaman UK Advisory Desk",
+    author: "Sav Zaman Advisory Desk",
     readTime: "5 min read",
     tags: ["Prime Property", "Investment", "UK Market", "London"],
     body: [
@@ -64,7 +64,7 @@ export const blogPosts: BlogPost[] = [
     category: "Guide",
     excerpt:
       "A short checklist that helps buyers filter out weak-fit listings earlier and spend viewing time on the opportunities that matter.",
-    author: "Sav Zaman UK Client Team",
+    author: "Sav Zaman Client Team",
     readTime: "4 min read",
     tags: ["Buyers", "Viewing", "Checklist", "Guides"],
     body: [
@@ -83,7 +83,7 @@ export const blogPosts: BlogPost[] = [
     category: "Commercial",
     excerpt:
       "Commercial property decisions move faster when the listing tells a clearer story around frontage, use case, location logic, and next steps.",
-    author: "Sav Zaman UK Commercial Team",
+    author: "Sav Zaman Commercial Team",
     readTime: "6 min read",
     tags: ["Commercial", "Retail", "Presentation"],
     body: [
@@ -102,7 +102,7 @@ export const blogPosts: BlogPost[] = [
     category: "Brand Strategy",
     excerpt:
       "Trust is shaped by more than reputation. Listing hierarchy, response flow, and visual control all influence how quickly a client believes the brand.",
-    author: "Sav Zaman UK Editorial",
+    author: "Sav Zaman Editorial",
     readTime: "5 min read",
     tags: ["Brand", "Client Experience", "Design", "Interior Design"],
     body: [
@@ -120,7 +120,7 @@ export const blogPosts: BlogPost[] = [
     date: "Feb 2026",
     category: "London",
     excerpt: "A concise read on how presentation, stock levels, and buyer behaviour shifted across key central postcodes.",
-    author: "Sav Zaman UK Market Desk",
+    author: "Sav Zaman Market Desk",
     readTime: "6 min read",
     tags: ["London", "UK Market", "Prime Property"],
     body: [
@@ -136,7 +136,7 @@ export const blogPosts: BlogPost[] = [
     date: "Jan 2026",
     category: "Architecture",
     excerpt: "How planning-sensitive refurbishments balance heritage constraints with modern living expectations.",
-    author: "Sav Zaman UK Editorial",
+    author: "Sav Zaman Editorial",
     readTime: "7 min read",
     tags: ["Architecture", "Design", "Case Studies"],
     body: [
@@ -151,7 +151,7 @@ export const blogPosts: BlogPost[] = [
     date: "Jan 2026",
     category: "Interior Design",
     excerpt: "Staging choices that sharpen photography, widen appeal, and shorten time-to-offer without looking generic.",
-    author: "Sav Zaman UK Presentation Team",
+    author: "Sav Zaman Presentation Team",
     readTime: "4 min read",
     tags: ["Interior Design", "Sellers", "Guides"],
     body: [
@@ -166,7 +166,7 @@ export const blogPosts: BlogPost[] = [
     date: "Dec 2025",
     category: "Case Studies",
     excerpt: "A before-and-after style breakdown of messaging, media order, and enquiry routing for a commercial-led asset.",
-    author: "Sav Zaman UK Advisory",
+    author: "Sav Zaman Advisory",
     readTime: "8 min read",
     tags: ["Case Studies", "Commercial", "UK Market"],
     body: [
@@ -181,7 +181,7 @@ export const blogPosts: BlogPost[] = [
     date: "Dec 2025",
     category: "Guides",
     excerpt: "Documentation, presentation, and pricing discipline that reduces friction once the listing goes live.",
-    author: "Sav Zaman UK Client Team",
+    author: "Sav Zaman Client Team",
     readTime: "5 min read",
     tags: ["Sellers", "Guides", "UK Market"],
     body: [

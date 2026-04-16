@@ -6,7 +6,7 @@ const DOCS = {
   "privacy-policy": {
     title: "Privacy Policy",
     body:
-      "Sav Zaman UK respects your privacy. This page outlines how we may collect, use, and protect personal information when you enquire about properties or use our services. For full details or questions, contact us at the email below.",
+      "Sav Zaman respects your privacy. This page outlines how we may collect, use, and protect personal information when you enquire about properties or use our services. For full details or questions, contact us at the email below.",
   },
   "terms-of-use": {
     title: "Terms of Use",
@@ -26,7 +26,7 @@ type Props = { slug: LegalSlug };
 
 const LegalDocument = ({ slug }: Props) => {
   const doc = DOCS[slug];
-  useDocumentTitle(`Sav Zaman UK — ${doc.title}`);
+  useDocumentTitle(`Sav Zaman — ${doc.title}`);
 
   return (
     <main className="mx-auto max-w-2xl px-6 py-16 md:py-24">

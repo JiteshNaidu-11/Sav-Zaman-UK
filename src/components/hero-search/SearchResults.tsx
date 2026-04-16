@@ -14,7 +14,7 @@ export function SearchResults({ results, isStale }: Props) {
         <div>
           <h2 className="font-luxury text-xl font-semibold tracking-[0.08em] text-white md:text-2xl">Matching listings</h2>
           <p className="mt-1 text-sm font-light tracking-wide text-[#D1C9C0]/90">
-            Live results from the Sav Zaman UK preview catalogue
+            Live results from the Sav Zaman preview catalogue
           </p>
         </div>
         <p className="text-sm font-medium text-white/80">

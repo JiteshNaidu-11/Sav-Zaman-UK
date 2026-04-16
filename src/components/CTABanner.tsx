@@ -65,7 +65,7 @@ const CTABanner = ({ sectionClassName, heading, description, pillLabel }: CTABan
   const { primary, secondary } = getCtaButtons(pathname);
   const onPropertiesIndex = pathname === "/properties";
 
-  const title = heading ?? "Ready to find the right Sav Zaman UK property opportunity?";
+  const title = heading ?? "Ready to find the right Sav Zaman property opportunity?";
   const body =
     description ??
     "Speak with our team about off-market listings, investor opportunities, or tailored property sourcing.";

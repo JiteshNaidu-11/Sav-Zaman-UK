@@ -79,7 +79,7 @@ const PropertyCard = ({
   layout = "horizontal",
   featured = false,
   imageCount,
-  agentLabel = "Sav Zaman UK",
+  agentLabel = "Sav Zaman",
 }: PropertyCardProps) => {
   const navigate = useNavigate();
   const { openEnquiry } = useEnquiryModal();
@@ -318,7 +318,7 @@ const PropertyCard = ({
           </div>
         </div>
         <div className="absolute inset-x-0 bottom-0 p-5">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/64">Sav Zaman UK Listing</p>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/64">Sav Zaman Listing</p>
           <p className="mt-2 font-heading text-3xl font-semibold tracking-[-0.03em] text-white">{price}</p>
         </div>
       </div>

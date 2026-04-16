@@ -15,7 +15,7 @@ export interface LeadInquiryRecord {
   created_at: string;
 }
 
-export const LOCAL_INQUIRY_STORAGE_KEY = "sav-zaman-uk.demo-inquiries";
+export const LOCAL_INQUIRY_STORAGE_KEY = "sav-zaman.demo-inquiries";
 
 export const inquiryTypeLabel: Record<InquiryType, string> = {
   contact_message: "Contact Message",

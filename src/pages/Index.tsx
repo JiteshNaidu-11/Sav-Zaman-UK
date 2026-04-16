@@ -121,7 +121,7 @@ const journalCardMotion = [
 ] as const;
 
 const Index = () => {
-  useDocumentTitle("Sav Zaman UK — Prime property advisory & listings");
+  useDocumentTitle("Sav Zaman — Prime property advisory & listings");
   const { openEnquiry } = useEnquiryModal();
   const [heroImageIndex, setHeroImageIndex] = useState(0);
   const heroSlideCount = heroSlides.length;
@@ -177,8 +177,11 @@ const Index = () => {
               <span className="inline-flex items-center rounded-full border border-[#D1C9C0]/35 bg-black/25 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.28em] text-[#D1C9C0] backdrop-blur-md">
                 Explore Properties
               </span>
-              <h1 className="mt-5 font-luxury text-4xl font-semibold leading-[1.08] tracking-[0.03em] text-white [text-shadow:0_2px_32px_rgba(0,0,0,0.5),0_1px_3px_rgba(0,0,0,0.75)] md:mt-6 md:text-5xl md:tracking-[0.04em] lg:text-[3.15rem]">
-                UK property opportunities, carefully sourced and clearly presented.
+              <h1 className="mt-5 font-luxury text-5xl font-semibold leading-[0.98] tracking-[0.06em] text-white [text-shadow:0_2px_32px_rgba(0,0,0,0.55),0_1px_3px_rgba(0,0,0,0.8)] md:mt-6 md:text-6xl lg:text-[4.1rem]">
+                <span className="block">Sav Zaman</span>
+                <span className="mt-3 block text-2xl font-medium tracking-[0.32em] text-[#D1C9C0]/95 md:text-3xl lg:text-[2.2rem]">
+                  The Property Man
+                </span>
               </h1>
               <p className="mt-5 max-w-xl font-luxury text-base font-light leading-relaxed tracking-[0.05em] text-[#D1C9C0] [text-shadow:0_1px_16px_rgba(0,0,0,0.4)] md:text-lg md:leading-8">
                 From London to key regional cities, explore residential and commercial listings with structured information,
@@ -283,7 +286,7 @@ const Index = () => {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.18),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(96,165,250,0.12),transparent_30%)]" />
         <div className="container-custom relative">
           <AnimatedSection className="max-w-2xl">
-            <span className="section-kicker text-[hsl(var(--accent-soft))]">Why Sav Zaman UK</span>
+            <span className="section-kicker text-[hsl(var(--accent-soft))]">Why Sav Zaman</span>
             <h2 className="mt-4 font-heading text-3xl font-semibold tracking-[-0.03em] text-white md:text-5xl">
               A sharper UK-facing property experience built for higher-trust discovery.
             </h2>
@@ -315,7 +318,7 @@ const Index = () => {
                     A property journey that feels tighter, more premium, and easier to trust.
                   </h2>
                   <p className="text-base leading-relaxed text-gray-400">
-                    From first brief to final step, Sav Zaman UK is structured to make property discovery, follow-up, and
+                    From first brief to final step, Sav Zaman is structured to make property discovery, follow-up, and
                     decision-making feel more controlled.
                   </p>
                 </div>
@@ -400,7 +403,7 @@ const Index = () => {
               Editorial content that adds more depth to the property brand.
             </h2>
             <p className="mt-5 text-base leading-8 text-muted-foreground">
-              The Sav Zaman UK journal gives the demo a stronger editorial layer around buying, selling, commercial review, and investment thinking.
+              The Sav Zaman journal gives the demo a stronger editorial layer around buying, selling, commercial review, and investment thinking.
             </p>
 
             <div className="mt-8 space-y-4">

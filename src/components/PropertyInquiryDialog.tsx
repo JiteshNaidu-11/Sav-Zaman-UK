@@ -27,7 +27,7 @@ const modeContent = {
     kicker: "Private Callback",
     title: "Request a call about this property",
     description:
-      "Share the buyer details and your message. Sav Zaman UK can then follow up with a cleaner, more personal property conversation.",
+      "Share the buyer details and your message. Sav Zaman can then follow up with a cleaner, more personal property conversation.",
     submitLabel: "Send callback request",
     note: "The form is built for quick property follow-up with better presentation than a standard inline form.",
   },

@@ -1,4 +1,4 @@
-export const ENQUIRY_LEADS_STORAGE_KEY = "sav-zaman-uk.enquiries";
+export const ENQUIRY_LEADS_STORAGE_KEY = "sav-zaman.enquiries";
 
 export type StoredEnquiryLead = {
   id: string;

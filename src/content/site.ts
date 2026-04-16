@@ -1,16 +1,16 @@
 export const siteContent = {
-  name: "Sav Zaman UK",
+  name: "Sav Zaman",
   shortName: "Sav Zaman",
-  tagline: "Premium property advisory and listings with a sharper UK-facing identity.",
+  tagline: "Premium property advisory and listings.",
   description:
-    "Sav Zaman UK presents residential, commercial, and investment opportunities through a more premium, more structured real-estate experience.",
+    "Sav Zaman presents residential, commercial, and investment opportunities through a premium, structured real-estate experience.",
   primaryCta: "Book A Property Consultation",
   secondaryCta: "Explore Properties",
   email: "hello@savzamanuk.com",
   phone: "+44 (0)20 5555 0148",
   whatsappNumber: import.meta.env.VITE_CLIENT_WHATSAPP_NUMBER?.trim() || "442055550148",
   hours: "Monday to Friday, 9:00 AM to 6:00 PM",
-  address: "Sav Zaman UK, London, United Kingdom",
+  address: "Sav Zaman, London, United Kingdom",
 } as const;
 
 /** Footer social — replace hrefs with your real profiles when ready. */
@@ -31,9 +31,9 @@ export const navItems = [
 ] as const;
 
 export const heroHighlights = [
-  "Residential and commercial listings",
-  "Investor-focused guidance",
-  "Premium presentation and support",
+  "Pre-auction deals",
+  "Direct to vendors",
+  "Below market value",
 ] as const;
 
 export const capabilityPillars = [
@@ -189,15 +189,15 @@ export const contactHighlights = [
   },
   {
     title: "Premium Property Experience",
-    description: "Sav Zaman UK is designed to feel sharper, darker, and more premium than a standard agency template.",
+    description: "Sav Zaman is designed to feel sharper, darker, and more premium than a standard agency template.",
   },
 ] as const;
 
 export const faqItems = [
   {
-    question: "What kind of properties does Sav Zaman UK focus on?",
+    question: "What kind of properties does Sav Zaman focus on?",
     answer:
-      "Sav Zaman UK is positioned around residential homes, commercial opportunities, and investment-led listings across stronger UK-facing property categories.",
+      "Sav Zaman is positioned around residential homes, commercial opportunities, and investment-led listings across stronger property categories.",
   },
   {
     question: "Can clients request brochures and callback support directly from a listing?",
@@ -215,7 +215,7 @@ export const faqItems = [
       "No. The structure also supports seller representation, commercial search, investor guidance, and end-to-end coordination around viewings and follow-up.",
   },
   {
-    question: "What makes Sav Zaman UK different from a typical property template?",
+    question: "What makes Sav Zaman different from a typical property template?",
     answer:
       "The focus is on a darker premium presentation, cleaner visual hierarchy, clearer property information, and a more controlled client journey from discovery to enquiry.",
   },

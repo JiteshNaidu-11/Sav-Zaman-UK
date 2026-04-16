@@ -67,7 +67,7 @@ const Blog = () => {
   }, [searchParams]);
 
   const pageTitle =
-    activeChip === "All" ? "Sav Zaman UK — Journal" : `Sav Zaman UK — Journal · ${activeChip}`;
+    activeChip === "All" ? "Sav Zaman — Journal" : `Sav Zaman — Journal · ${activeChip}`;
   useDocumentTitle(pageTitle);
 
   const setChip = (chip: string) => {
@@ -101,7 +101,7 @@ const Blog = () => {
         <div className="relative z-10 mx-auto max-w-7xl px-6">
           <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-12">
             <AnimatedSection className="max-w-xl">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-white/45">Sav Zaman UK Journal</p>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-white/45">Sav Zaman Journal</p>
               <h1 className="mt-5 font-heading text-4xl font-bold leading-[1.06] tracking-[-0.035em] text-white md:text-5xl lg:text-[2.85rem]">
                 Property insights built to look premium and read clearly.
               </h1>

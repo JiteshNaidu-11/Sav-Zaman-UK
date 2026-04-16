@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useDocumentTitle } from "@/lib/useDocumentTitle";
 
 const NotFound = () => {
-  useDocumentTitle("Sav Zaman UK — Page not found");
+  useDocumentTitle("Sav Zaman — Page not found");
 
   return (
     <main className="page-shell flex min-h-[70vh] items-center justify-center px-4 py-24">

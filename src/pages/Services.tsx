@@ -94,7 +94,7 @@ const detailBlocks = [
 const cardHover = "transition-all duration-300 hover:-translate-y-1 hover:shadow-xl";
 
 const Services = () => {
-  useDocumentTitle("Sav Zaman UK — Services");
+  useDocumentTitle("Sav Zaman — Services");
   return (
     <main className="overflow-hidden bg-[#F4F6FA]">
       {/* 1 — Hero */}

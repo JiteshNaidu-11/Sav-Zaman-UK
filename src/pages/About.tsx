@@ -57,7 +57,7 @@ function SectionRule() {
 }
 
 const About = () => {
-  useDocumentTitle("Sav Zaman UK — About");
+  useDocumentTitle("Sav Zaman — About");
   return (
     <main className="overflow-hidden bg-[#F4F6FA]">
       {/* 1 — Hero */}
@@ -73,7 +73,7 @@ const About = () => {
                 A real-estate approach shaped around trust, presentation, and measured delivery.
               </h1>
               <p className="mt-6 text-lg leading-relaxed text-white/70">
-                Sav Zaman UK exists to present property opportunities with more structure—clearer discovery, stronger
+                Sav Zaman exists to present property opportunities with more structure—clearer discovery, stronger
                 listing presentation, better follow-up, and calmer client communication from start to finish.
               </p>
             </AnimatedSection>
@@ -149,7 +149,7 @@ const About = () => {
                 Elevated presentation only works when it supports practical real-estate communication underneath it.
               </p>
               <p className="mt-4 text-base leading-relaxed text-gray-500">
-                Sav Zaman UK is designed to feel consultative and calm—so clients always know what matters, what is
+                Sav Zaman is designed to feel consultative and calm—so clients always know what matters, what is
                 available, and what happens next.
               </p>
             </AnimatedSection>

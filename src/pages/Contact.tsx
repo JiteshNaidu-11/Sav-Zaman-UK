@@ -12,7 +12,7 @@ function normalizeWhatsAppNumber(value: string): string {
 const mapEmbedSrc = `https://maps.google.com/maps?q=${encodeURIComponent(siteContent.address)}&output=embed`;
 
 const Contact = () => {
-  useDocumentTitle("Sav Zaman UK — Contact");
+  useDocumentTitle("Sav Zaman — Contact");
   const normalized = normalizeWhatsAppNumber(siteContent.whatsappNumber ?? siteContent.phone);
   const whatsappHref = normalized ? `https://wa.me/${normalized}` : `mailto:${siteContent.email}`;
 
@@ -29,7 +29,7 @@ const Contact = () => {
               Start the property conversation with a clearer brief and a stronger next step.
             </h1>
             <p className="mt-6 max-w-xl text-base leading-8 text-white/72 md:text-lg">
-              Whether you are buying, selling, booking a viewing, or exploring an investment opportunity, Sav Zaman UK is ready to hear the brief.
+              Whether you are buying, selling, booking a viewing, or exploring an investment opportunity, Sav Zaman is ready to hear the brief.
             </p>
           </AnimatedSection>
 

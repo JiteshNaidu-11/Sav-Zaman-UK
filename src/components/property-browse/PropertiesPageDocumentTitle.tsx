@@ -26,8 +26,7 @@ export function PropertiesPageDocumentTitle() {
       segments.push("Nationwide");
     }
 
-    document.title =
-      segments.length > 0 ? `Sav Zaman UK — ${segments.join(" · ")}` : "Sav Zaman UK — Properties";
+    document.title = segments.length > 0 ? `Sav Zaman — ${segments.join(" · ")}` : "Sav Zaman — Properties";
 
     return () => {
       document.title = prev;

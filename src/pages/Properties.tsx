@@ -18,7 +18,7 @@ const Properties = () => (
           <AnimatedSection>
             <span className="pill-tag">Property collection</span>
             <h1 className="mt-6 font-heading text-5xl font-semibold leading-[0.96] tracking-[-0.03em] text-white md:text-6xl">
-              Browse Sav Zaman UK listings with live filters, sort, and map view.
+              Browse Sav Zaman listings with live filters, sort, and map view.
             </h1>
             <p className="mt-6 max-w-3xl text-base leading-8 text-white/72 md:text-lg">
               Start from the homepage search to land here with your criteria, or refine location, listing type, sector,

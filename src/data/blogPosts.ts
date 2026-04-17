@@ -1,11 +1,17 @@
-import blog1 from "@/assets/blog-1.jpg";
-import blog2 from "@/assets/blog-2.jpg";
 import hero1 from "@/assets/hero-1.jpg";
 import hero2 from "@/assets/hero-2.jpg";
+import hero3 from "@/assets/hero-3.jpg";
+import londonSkyline from "@/assets/london-2.jpg";
+import londonRiver from "@/assets/london 3.jpg";
+import ukHeroFrame from "@/assets/7.jpg";
 import property1 from "@/assets/property-1.jpg";
 import property2 from "@/assets/property-2.jpg";
 import property3 from "@/assets/property-3.jpg";
 import property4 from "@/assets/property-4.jpg";
+
+/** Legacy stock thumbnails (not used — journal uses UK photography only). */
+// import blog1 from "@/assets/blog-1.jpg";
+// import blog2 from "@/assets/blog-2.jpg";
 
 export interface BlogPost {
   slug: string;
@@ -20,7 +26,16 @@ export interface BlogPost {
   body: string[];
 }
 
-export const blogPosts: BlogPost[] = [
+/**
+ * UK-only journal: keep India-market (or other non-UK) drafts out of the live list.
+ * Add slugs here to hide posts without deleting their source below.
+ */
+const EXCLUDED_INDIA_MARKET_SLUGS: readonly string[] = [
+  // e.g. "mumbai-luxury-residential-outlook",
+];
+
+/** All editorial entries before UK-only filtering. */
+const allBlogPosts: BlogPost[] = [
   {
     slug: "prime-uk-property-opportunities-in-2026",
     image: property1,
@@ -39,7 +54,7 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "how-to-evaluate-prime-uk-property-opportunities",
-    image: blog1,
+    image: londonSkyline,
     title: "How to evaluate prime UK property opportunities with more confidence",
     date: "08 Feb 2026",
     category: "Investment",
@@ -58,7 +73,7 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "what-buyers-should-check-before-booking-a-viewing",
-    image: blog2,
+    image: londonRiver,
     title: "What buyers should check before booking a property viewing",
     date: "29 Jan 2026",
     category: "Guide",
@@ -161,7 +176,7 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "case-study-repositioning-a-mixed-use-corner",
-    image: blog2,
+    image: hero3,
     title: "Case study: repositioning a mixed-use corner for stronger enquiry",
     date: "Dec 2025",
     category: "Case Studies",
@@ -176,7 +191,7 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "sellers-checklist-before-you-instruct",
-    image: blog1,
+    image: ukHeroFrame,
     title: "The seller’s checklist before you instruct an agent",
     date: "Dec 2025",
     category: "Guides",
@@ -190,6 +205,33 @@ export const blogPosts: BlogPost[] = [
     ],
   },
 ];
+
+/*
+ * ── India / South Asia market (commented out — not shown on UK site) ──
+ * Restore objects here if you need copy reference, then add their `slug` to
+ * `EXCLUDED_INDIA_MARKET_SLUGS` above, or merge into `allBlogPosts` and tag with region.
+ *
+ * {
+ *   slug: "example-india-market-piece",
+ *   image: londonSkyline,
+ *   title: "Example India market headline",
+ *   date: "Jan 2026",
+ *   category: "Investment",
+ *   excerpt: "…",
+ *   author: "…",
+ *   readTime: "5 min read",
+ *   tags: ["India", "Investment"],
+ *   body: ["…"],
+ * },
+ */
+
+function isIndiaMarketPost(post: BlogPost): boolean {
+  if (EXCLUDED_INDIA_MARKET_SLUGS.includes(post.slug)) return true;
+  return post.tags.some((t) => /^india$/i.test(t.trim()));
+}
+
+/** Published journal (UK positioning — India-market posts excluded). */
+export const blogPosts: BlogPost[] = allBlogPosts.filter((post) => !isIndiaMarketPost(post));
 
 export function getPostBySlug(slug: string): BlogPost | undefined {
   return blogPosts.find((post) => post.slug === slug);

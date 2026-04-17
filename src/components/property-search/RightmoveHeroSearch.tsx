@@ -11,13 +11,15 @@ type Tab = "buy" | "rent" | "sold";
 function ListingTypeTabs({
   tab,
   onChange,
+  compact,
 }: {
   tab: Tab;
   onChange: (t: Tab) => void;
+  compact?: boolean;
 }) {
   return (
     <div
-      className="relative flex h-8 w-full items-center justify-center rounded-full border border-white/20 bg-[#0B1A2F]/60 p-0.5 backdrop-blur-md lg:justify-start"
+      className={`relative flex w-full items-center justify-center rounded-full border border-white/20 bg-[#0B1A2F]/75 p-0.5 backdrop-blur-md lg:justify-start ${compact ? "h-7" : "h-8"}`}
       role="tablist"
       aria-label="Listing type"
     >
@@ -56,10 +58,39 @@ function ListingTypeTabs({
 function SectorSelector({
   sector,
   onChange,
+  compact,
 }: {
   sector: HeroSector;
   onChange: (s: HeroSector) => void;
+  compact?: boolean;
 }) {
+  if (compact) {
+    return (
+      <div className="space-y-1">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/80">Sector</p>
+        <div className="-mx-0.5 flex gap-1.5 overflow-x-auto pb-0.5 pt-0.5 [scrollbar-width:thin] [&::-webkit-scrollbar]:h-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-white/30">
+          {HERO_SECTOR_OPTIONS.map((label) => {
+            const active = sector === label;
+            return (
+              <button
+                key={label}
+                type="button"
+                onClick={() => onChange(label)}
+                className={`shrink-0 rounded-full px-3 py-1 text-left text-xs font-medium transition ${
+                  active
+                    ? "bg-gradient-to-r from-blue-500 to-teal-400 text-white shadow-md"
+                    : "border border-white/20 bg-[#152a45]/80 text-white/95 hover:bg-[#1a3f62]/95"
+                }`}
+              >
+                {label}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-1.5">
       <p className="text-center text-[10px] font-semibold uppercase tracking-[0.2em] text-white/55 lg:text-left">Sector</p>
@@ -89,18 +120,24 @@ function SectorSelector({
 function RadiusDropdown({
   value,
   onChange,
+  solid,
 }: {
   value: string;
   onChange: (v: string) => void;
+  solid?: boolean;
 }) {
   return (
-    <label className="block w-full space-y-1.5">
-      <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/55">Area / radius</span>
+    <label className="block w-full space-y-1">
+      <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/80">Area / radius</span>
       <div className="relative">
         <select
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="w-full cursor-pointer appearance-none rounded-full border border-white/20 bg-white/10 py-2.5 pl-4 pr-10 text-sm text-white backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-blue-400/50"
+          className={`w-full cursor-pointer appearance-none rounded-full border pl-4 pr-10 text-sm text-white focus:outline-none focus:ring-2 focus:ring-teal-400/45 ${
+            solid
+              ? "border-white/25 bg-[#152a45]/95 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
+              : "border-white/20 bg-white/10 py-2.5 backdrop-blur-sm focus:ring-blue-400/50"
+          }`}
         >
           {BROWSE_AREA_RADIUS_OPTIONS.map((o) => (
             <option key={o.value} value={o.value} className="bg-[#0B1A2F] text-white">
@@ -114,7 +151,16 @@ function RadiusDropdown({
   );
 }
 
-export function RightmoveHeroSearch() {
+const rootClass: Record<"default" | "overlay", string> = {
+  default:
+    "mx-auto w-full max-w-xl rounded-2xl border border-white/20 bg-white/10 p-5 text-white shadow-2xl backdrop-blur-xl md:p-6",
+  overlay:
+    "isolate mx-auto w-full rounded-2xl border border-white/20 bg-gradient-to-b from-[#0f2744]/[0.98] via-[#0c1f38]/[0.98] to-[#081426]/[0.99] p-3.5 text-white shadow-[0_24px_56px_-20px_rgba(0,0,0,0.72),inset_0_1px_0_rgba(255,255,255,0.08)] ring-1 ring-white/10 backdrop-blur-md md:p-4",
+};
+
+type RightmoveHeroSearchProps = { variant?: "default" | "overlay" };
+
+export function RightmoveHeroSearch({ variant = "default" }: RightmoveHeroSearchProps) {
   const navigate = useNavigate();
   const [tab, setTab] = useState<Tab>("buy");
   const [sector, setSector] = useState<HeroSector>("Any Sector");
@@ -133,25 +179,31 @@ export function RightmoveHeroSearch() {
     navigate(qs ? `/properties?${qs}` : "/properties");
   };
 
+  const isOverlay = variant === "overlay";
+  const block = isOverlay ? "mt-2.5 border-t border-white/10 pt-2.5" : "mt-4 border-t border-white/10 pt-4";
+
   return (
-    <div className="mx-auto w-full max-w-xl rounded-2xl border border-white/20 bg-white/10 p-5 text-white shadow-2xl backdrop-blur-xl md:p-6">
+    <div className={rootClass[variant]}>
       <ListingTypeTabs
+        compact={isOverlay}
         tab={tab}
         onChange={(t) => {
           setTab(t);
         }}
       />
 
-      <div className="mt-4 border-t border-white/10 pt-4">
-        <SectorSelector sector={sector} onChange={setSector} />
+      <div className={block}>
+        <SectorSelector compact={isOverlay} sector={sector} onChange={setSector} />
       </div>
 
-      <div className="mt-4 space-y-1.5 border-t border-white/10 pt-4">
-        <p className="text-center text-[10px] font-semibold uppercase tracking-[0.2em] text-white/55 lg:text-left">
+      <div className={`${block} space-y-1`}>
+        <p
+          className={`text-[10px] font-semibold uppercase tracking-[0.2em] ${isOverlay ? "text-left text-white/85" : "text-center text-white/55 lg:text-left"}`}
+        >
           Location
         </p>
         <LocationAutocomplete
-          variant="heroGlass"
+          variant={isOverlay ? "heroOverlay" : "heroGlass"}
           value={locationInput}
           onChange={setLocationInput}
           onPick={setPickedLocation}
@@ -159,14 +211,14 @@ export function RightmoveHeroSearch() {
         />
       </div>
 
-      <div className="mt-4 border-t border-white/10 pt-4">
-        <RadiusDropdown value={radius} onChange={setRadius} />
+      <div className={block}>
+        <RadiusDropdown solid={isOverlay} value={radius} onChange={setRadius} />
       </div>
 
       <button
         type="button"
         onClick={runSearch}
-        className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#2563EB] to-[#14B8A6] px-5 py-2.5 text-sm font-medium text-white shadow-lg transition hover:scale-[1.02] active:scale-[0.98]"
+        className={`inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#2563EB] to-[#14B8A6] px-4 text-sm font-medium text-white shadow-lg transition hover:scale-[1.02] active:scale-[0.98] ${isOverlay ? "mt-2.5 py-2" : "mt-4 py-2.5"}`}
       >
         <Search className="h-3.5 w-3.5" />
         Search properties

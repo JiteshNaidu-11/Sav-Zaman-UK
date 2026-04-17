@@ -112,37 +112,39 @@ const Index = () => {
   const activeHeroSlide = heroSlides[heroImageIndex];
 
   return (
-    <main className="overflow-hidden">
-      <section className="page-shell relative isolate flex min-h-screen items-center overflow-hidden py-12 md:py-16">
-        <div className="pointer-events-none absolute inset-0 z-0">
-          <div className="hero-noise absolute inset-0 opacity-[0.28]" />
+    <main className="overflow-x-hidden">
+      {/* z-30 keeps the hero + bridge search above the next section (z-10); otherwise the section paints over the filter */}
+      <div className="relative z-30 isolate overflow-visible pb-8 md:pb-10">
+        <section className="page-shell relative flex min-h-screen flex-col overflow-hidden py-12 md:py-16">
+          <div className="pointer-events-none absolute inset-0 z-0">
+            <div className="hero-noise absolute inset-0 opacity-[0.28]" />
 
-          <AnimatePresence mode="sync">
-            <motion.div
-              key={heroImageIndex}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1, ease: "easeInOut" }}
-              className="absolute inset-0"
-            >
-              <img
-                src={activeHeroSlide.image}
-                alt=""
-                className="absolute inset-0 h-full w-full object-cover"
-                style={{ objectPosition: activeHeroSlide.objectPosition }}
-                decoding="async"
-                fetchpriority="high"
-              />
-            </motion.div>
-          </AnimatePresence>
+            <AnimatePresence mode="sync">
+              <motion.div
+                key={heroImageIndex}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 1, ease: "easeInOut" }}
+                className="absolute inset-0"
+              >
+                <img
+                  src={activeHeroSlide.image}
+                  alt=""
+                  className="absolute inset-0 h-full w-full object-cover"
+                  style={{ objectPosition: activeHeroSlide.objectPosition }}
+                  decoding="async"
+                  fetchpriority="high"
+                />
+              </motion.div>
+            </AnimatePresence>
 
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0B1A2F]/80 via-[#0B1A2F]/40 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-black/25" />
-        </div>
+            <div className="absolute inset-0 bg-gradient-to-r from-[#0B1A2F]/80 via-[#0B1A2F]/40 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-black/25" />
+          </div>
 
-        <div className="relative z-10 mx-auto w-full max-w-7xl px-6">
-          <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-12">
+          <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-1 flex-col justify-center px-6 pb-32 md:pb-40 lg:pb-44">
+            <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-12">
           <motion.div
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
@@ -199,15 +201,65 @@ const Index = () => {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: "easeOut", delay: 0.06 }}
-            className="w-full lg:justify-self-end"
+            className="flex w-full justify-center lg:justify-end"
           >
-            <RightmoveHeroSearch />
+            <motion.div
+              className="relative w-full max-w-[300px] sm:max-w-[300px] lg:max-w-[min(100%,480px)]"
+              animate={{ y: [0, -12, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <div
+                className="pointer-events-none absolute -inset-8 rounded-full sm:-inset-10"
+                style={{
+                  background:
+                    "radial-gradient(ellipse at center, rgba(59,130,246,0.2) 0%, rgba(45,212,191,0.12) 45%, transparent 75%)",
+                  filter: "blur(32px)",
+                }}
+                aria-hidden
+              />
+              <div
+                className="relative z-10 mx-auto w-full max-w-[260px] sm:max-w-[300px] lg:max-w-[480px]"
+                style={{
+                  WebkitMaskImage:
+                    "radial-gradient(ellipse 72% 88% at 50% 48%, #fff 52%, rgba(255,255,255,0.65) 72%, transparent 100%)",
+                  maskImage:
+                    "radial-gradient(ellipse 72% 88% at 50% 48%, #fff 52%, rgba(255,255,255,0.65) 72%, transparent 100%)",
+                  WebkitMaskRepeat: "no-repeat",
+                  maskRepeat: "no-repeat",
+                  WebkitMaskSize: "100% 100%",
+                  maskSize: "100% 100%",
+                }}
+              >
+                <img
+                  src={animatedBrandImage}
+                  alt="Sav Zaman"
+                  loading="lazy"
+                  decoding="async"
+                  className="relative z-[1] mx-auto h-auto w-full object-contain opacity-[0.97] shadow-[0_10px_30px_rgba(0,0,0,0.25)] [filter:brightness(0.9)_contrast(0.95)_saturate(0.9)_hue-rotate(5deg)]"
+                />
+                <div
+                  className="pointer-events-none absolute inset-0 z-[2] rounded-[inherit] bg-black/[0.18] mix-blend-multiply"
+                  aria-hidden
+                />
+                <div
+                  className="pointer-events-none absolute inset-0 z-[3] rounded-[inherit] bg-gradient-to-br from-[rgba(0,40,80,0.12)] via-transparent to-[rgba(0,60,70,0.08)] mix-blend-soft-light"
+                  aria-hidden
+                />
+              </div>
+            </motion.div>
           </motion.div>
           </div>
         </div>
       </section>
 
-      <section className="section-padding bg-[hsl(var(--secondary))]">
+        <div className="pointer-events-none absolute bottom-0 left-0 right-0 z-[35] flex translate-y-1/2 justify-center px-3 sm:px-5">
+          <div className="pointer-events-auto w-[95%] md:w-[78%] md:max-w-[920px] lg:w-[75%]">
+            <RightmoveHeroSearch variant="overlay" />
+          </div>
+        </div>
+      </div>
+
+      <section className="section-padding relative z-10 bg-[hsl(var(--secondary))] pt-36 md:pt-48 lg:pt-52">
         <div className="container-custom">
           <AnimatedSection className="max-w-2xl">
             <span className="section-kicker">Property Services</span>

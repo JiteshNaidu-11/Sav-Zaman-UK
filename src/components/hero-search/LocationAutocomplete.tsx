@@ -7,8 +7,8 @@ type Props = {
   onChange: (value: string) => void;
   onPick: (canonical: string) => void;
   onClearPick: () => void;
-  /** `dark` = hero on imagery; `light` = filter bar; `heroGlass` = full glass pill on hero; `stickyBar` = compact pill in fixed browse header. */
-  variant?: "dark" | "light" | "heroGlass" | "stickyBar";
+  /** `dark` = hero on imagery; `light` = filter bar; `heroGlass` = full glass pill on hero; `heroOverlay` = solid-tint field on floating hero search; `stickyBar` = compact pill in fixed browse header. */
+  variant?: "dark" | "light" | "heroGlass" | "heroOverlay" | "stickyBar";
   /** Overrides default location hint copy. */
   placeholder?: string;
 };
@@ -107,16 +107,23 @@ export function LocationAutocomplete({
 
   const isLight = variant === "light";
   const isHeroGlass = variant === "heroGlass";
+  const isHeroOverlay = variant === "heroOverlay";
   const isStickyBar = variant === "stickyBar";
-  const iconLeft = isHeroGlass ? "left-4" : "left-3";
+  const iconLeft = isHeroGlass || isHeroOverlay ? "left-4" : "left-3";
   const inputPadLeft = "pl-10";
 
   return (
     <div ref={wrapRef} className="relative z-50 min-w-0 w-full">
       <Search
         className={`pointer-events-none absolute top-1/2 z-[1] -translate-y-1/2 ${iconLeft} ${
-          isHeroGlass ? "h-3.5 w-3.5" : "h-4 w-4"
-        } ${isLight || isStickyBar ? "text-slate-400" : isHeroGlass ? "text-white/70" : "text-[#D1C9C0]/80"}`}
+          isHeroGlass || isHeroOverlay ? "h-3.5 w-3.5" : "h-4 w-4"
+        } ${
+          isLight || isStickyBar
+            ? "text-slate-400"
+            : isHeroGlass || isHeroOverlay
+              ? "text-white/75"
+              : "text-[#D1C9C0]/80"
+        }`}
       />
       <input
         ref={inputRef}
@@ -139,8 +146,10 @@ export function LocationAutocomplete({
         placeholder={placeholder}
         autoComplete="off"
         className={
-          isHeroGlass
-            ? `relative z-[1] w-full rounded-full border border-white/20 bg-white/10 ${inputPadLeft} pr-4 py-2.5 text-sm text-white placeholder:text-white/60 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-blue-400/50`
+          isHeroOverlay
+            ? `relative z-[1] w-full rounded-full border border-white/25 bg-[#152a45]/95 ${inputPadLeft} pr-4 py-2 text-sm text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] placeholder:text-white/60 focus:outline-none focus:ring-2 focus:ring-teal-400/45`
+            : isHeroGlass
+              ? `relative z-[1] w-full rounded-full border border-white/20 bg-white/10 ${inputPadLeft} pr-4 py-2.5 text-sm text-white placeholder:text-white/60 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-blue-400/50`
             : isStickyBar
               ? `relative z-[1] w-full rounded-full border-0 bg-white py-2 ${inputPadLeft} pr-3 text-sm text-slate-900 shadow-sm ring-1 ring-slate-200/80 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/35`
               : isLight

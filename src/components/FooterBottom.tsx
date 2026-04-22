@@ -85,6 +85,17 @@ export function FooterBottom() {
           <Link to="/cookies" className={bottomLinkClass}>
             Cookies
           </Link>
+          <span className="text-white/30" aria-hidden>
+            |
+          </span>
+          <a
+            href="https://webnxt.co/"
+            className={bottomLinkClass}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Designed and Maintained by WebNxt
+          </a>
         </div>
 
         <SocialLinks className="lg:justify-end" />

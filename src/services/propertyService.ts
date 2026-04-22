@@ -1,5 +1,7 @@
 import { supabase, supabaseConfigured } from "@/lib/supabaseClient";
 import { properties as seedProperties, type Property } from "@/data/properties";
+import { getPublicCatalogMode, PUBLIC_DEMO_SLUGS } from "@/lib/publicCatalogMode";
+import { pickFallbackPropertyImage } from "@/lib/propertyFallbackImages";
 
 export type TransactionType = "Rent" | "Sale";
 
@@ -46,10 +48,13 @@ function normalizeRow(p: any): NormalizedProperty {
   const price = (p.price ?? "").toString();
   const type = (p.type ?? "").toString();
 
-  const image = (p.image_url ?? p.image ?? "").toString();
-  const images = (p.gallery_urls ?? p.gallery ?? []) as string[];
+  const rawImage = (p.image_url ?? p.image ?? "").toString();
+  const rawImages = (p.gallery_urls ?? p.gallery ?? []) as string[];
   const id = (p.id ?? p.slug ?? title).toString();
   const slug = (p.slug ?? "").toString() || undefined;
+  const fallbackImage = pickFallbackPropertyImage(slug || id || title || location || address);
+  const image = rawImage.trim() || (Array.isArray(rawImages) ? rawImages[0]?.toString().trim() : "") || fallbackImage;
+  const images = Array.isArray(rawImages) && rawImages.length ? rawImages : image ? [image] : [fallbackImage];
 
   const transactionType: TransactionType = type === "For Rent" ? "Rent" : "Sale";
 
@@ -64,11 +69,16 @@ function normalizeRow(p: any): NormalizedProperty {
     transactionType,
     type: (p.propertyTypeLabel ?? p.category ?? "").toString() || "Property",
     image,
-    images: Array.isArray(images) && images.length ? images : image ? [image] : [],
+    images,
   };
 }
 
 export async function getApprovedProperties(): Promise<{ data: NormalizedProperty[]; error: string | null }> {
+  if (typeof window !== "undefined" && getPublicCatalogMode() === "demo") {
+    const demo = seedProperties.filter((p) => PUBLIC_DEMO_SLUGS.includes(p.slug as any));
+    return { data: (demo.length ? demo : seedProperties.slice(0, 3)).map((p) => normalizeRow(p)), error: null };
+  }
+
   // Home Ambit rule: fallback to mock data if not configured.
   if (!supabaseConfigured || !supabase) {
     return { data: seedProperties.map((p) => normalizeRow(p)), error: null };

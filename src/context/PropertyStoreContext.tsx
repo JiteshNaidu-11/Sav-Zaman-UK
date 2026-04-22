@@ -10,6 +10,8 @@ import {
   getSimilarPropertiesFromList,
   properties as seedProperties,
 } from "@/data/properties";
+import { getPublicCatalogMode, PUBLIC_DEMO_SLUGS } from "@/lib/publicCatalogMode";
+import { pickFallbackPropertyImage } from "@/lib/propertyFallbackImages";
 import { propertyModelToRecord, propertyRecordToModel, hydrateProperty, type PropertyRecord } from "@/lib/propertyRecords";
 import { supabase, supabaseConfigured } from "@/lib/supabase";
 
@@ -34,8 +36,9 @@ function uniqueLines(items: string[]): string[] {
   return Array.from(new Set(items.map((item) => item.trim()).filter(Boolean)));
 }
 
-const fallbackImage = seedProperties[0]?.image || "";
+const fallbackImage = pickFallbackPropertyImage("catalog-fallback");
 const defaultProperties = seedProperties.map((property) => hydrateProperty(property, fallbackImage));
+const defaultDemoProperties = defaultProperties.filter((p) => PUBLIC_DEMO_SLUGS.includes(p.slug as any));
 
 function isDemoCatalogPropertySlug(slug: string | undefined): boolean {
   // Old generator slugs looked like `catalog-${seq}-...`
@@ -65,6 +68,10 @@ function readStoredProperties(): Property[] {
     return defaultProperties;
   }
 
+  if (getPublicCatalogMode() === "demo") {
+    return defaultDemoProperties.length ? defaultDemoProperties : defaultProperties.slice(0, 3);
+  }
+
   try {
     const rawValue = window.localStorage.getItem(PROPERTY_STORAGE_KEY);
     if (!rawValue) {
@@ -88,6 +95,10 @@ function readStoredProperties(): Property[] {
 async function fetchRemoteProperties(): Promise<Property[]> {
   if (!supabaseConfigured || !supabase) {
     return readStoredProperties();
+  }
+
+  if (typeof window !== "undefined" && getPublicCatalogMode() === "demo") {
+    return defaultDemoProperties.length ? defaultDemoProperties : defaultProperties.slice(0, 3);
   }
 
   const { data, error } = await supabase

@@ -13,8 +13,8 @@ export const siteContent = {
     "Explore premium residential and commercial properties across the UK with Sav Zaman.",
   primaryCta: "Book A Property Consultation",
   secondaryCta: "Explore Properties",
-  email: "hello@savzamanuk.com",
-  phone: "+44 (0)20 5555 0148",
+  email: "info@savzamanproperties.com",
+  phone: "+44 7557 415693",
   whatsappNumber: import.meta.env.VITE_CLIENT_WHATSAPP_NUMBER?.trim() || "442055550148",
   hours: "Monday to Friday, 9:00 AM to 6:00 PM",
   address: "Sav Zaman, London, United Kingdom",
@@ -41,6 +41,9 @@ export const heroHighlights = [
   "Pre-auction deals",
   "Direct to vendors",
   "Below market value",
+  "High Yielding Investments",
+  "10% and above yields",
+  "20 Year+  Experience",
 ] as const;
 
 export const capabilityPillars = [
@@ -69,7 +72,7 @@ export const capabilityPillars = [
 export const performanceSignals = [
   { value: "24h", label: "Response target", note: "Fast first contact for active enquiries." },
   { value: "UK", label: "Sav Zaman identity", note: "A darker, more premium property presentation." },
-  { value: "360+", label: "Listing support", note: "Discovery, viewings, follow-up, and transaction support." },
+  { value: "20+", label: "Years Experience", note: "Trusted real estate guidance across projects." },
   { value: "Prime", label: "Property focus", note: "Residential, commercial, and investment-led opportunities." },
 ] as const;
 
@@ -86,7 +89,7 @@ export const founderProfile = {
     "Design-conscious presentation paired with practical real-estate delivery",
   ],
   stats: [
-    { value: "12+", label: "Years around property conversations" },
+    { value: "20+", label: "Years experience" },
     { value: "UK", label: "Market-facing brand focus" },
     { value: "1:1", label: "Founder visibility on serious enquiries" },
   ],

@@ -293,7 +293,7 @@ const Blog = () => {
                         </div>
                       </div>
                       <div className="flex min-h-0 flex-1 flex-col justify-between p-6">
-                        <div className="min-h-0">
+                        <div className="min-h-0 overflow-hidden">
                           <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-white/45">
                             <span className="inline-flex items-center gap-1.5">
                               <Calendar className="h-3.5 w-3.5 shrink-0 text-blue-400/80" />
@@ -308,12 +308,14 @@ const Blog = () => {
                             {post.title}
                           </h3>
                           <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-white/55">{post.excerpt}</p>
-                          <p className="mt-3 line-clamp-1 text-xs font-medium text-white/40">By {post.author}</p>
                         </div>
-                        <span className="inline-flex shrink-0 items-center gap-2 pt-5 text-sm font-semibold text-blue-300 transition-colors group-hover:text-blue-200">
-                          Read article
-                          <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                        </span>
+                        <div className="shrink-0 pt-5">
+                          <p className="line-clamp-1 text-xs font-medium text-white/40">By {post.author}</p>
+                          <span className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-blue-300 transition-colors group-hover:text-blue-200">
+                            Read article
+                            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                          </span>
+                        </div>
                       </div>
                     </article>
                   </Link>

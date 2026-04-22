@@ -39,8 +39,8 @@ const LegalDocument = ({ slug }: Props) => {
       <p className="mt-6 text-base leading-7 text-muted-foreground">{doc.body}</p>
       <p className="mt-8 text-sm text-muted-foreground">
         Questions?{" "}
-        <a href="mailto:hello@savzamanuk.com" className="text-blue-600 hover:underline">
-          hello@savzamanuk.com
+        <a href="mailto:info@savzamanproperties.com" className="text-blue-600 hover:underline">
+          info@savzamanproperties.com
         </a>
       </p>
     </main>

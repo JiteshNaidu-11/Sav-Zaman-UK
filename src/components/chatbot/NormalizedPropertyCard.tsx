@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import type { NormalizedProperty } from "@/services/propertyService";
+import { toPublicUrl } from "@/lib/toPublicUrl";
 
 type Props = {
   property: NormalizedProperty;
@@ -7,15 +8,20 @@ type Props = {
 
 export function NormalizedPropertyCard({ property }: Props) {
   const href = `/properties/${encodeURIComponent(property.slug ?? property.id)}`;
+  const imgSrc = property.image.startsWith("/projects/") ? toPublicUrl(property.image) : property.image;
 
   return (
     <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/5">
       <div className="flex gap-3 p-3">
         <img
-          src={property.image}
+          src={imgSrc}
           alt={property.projectName}
           className="h-16 w-16 shrink-0 rounded-xl object-cover ring-1 ring-white/10"
           loading="lazy"
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = toPublicUrl("placeholder.svg");
+          }}
         />
         <div className="min-w-0 flex-1">
           <p className="line-clamp-2 text-sm font-semibold text-white">{property.projectName}</p>

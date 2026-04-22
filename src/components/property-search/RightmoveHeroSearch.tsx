@@ -1,12 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { ChevronDown, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { LocationAutocomplete } from "@/components/hero-search";
 import { BROWSE_AREA_RADIUS_OPTIONS } from "@/lib/propertyBrowseFilter";
 import { HERO_SECTOR_OPTIONS, type HeroSector } from "@/lib/propertyHeroSearch";
+import { Slider } from "@/components/ui/slider";
 
 type Tab = "buy" | "rent" | "sold";
+
+function formatGBP(n: number) {
+  return `£${n.toLocaleString("en-GB")}`;
+}
 
 function ListingTypeTabs({
   tab,
@@ -117,7 +122,7 @@ function SectorSelector({
   );
 }
 
-function RadiusDropdown({
+function RadiusSlider({
   value,
   onChange,
   solid,
@@ -126,28 +131,95 @@ function RadiusDropdown({
   onChange: (v: string) => void;
   solid?: boolean;
 }) {
+  const currentIndex = Math.max(
+    0,
+    BROWSE_AREA_RADIUS_OPTIONS.findIndex((o) => o.value === value),
+  );
+  const display = BROWSE_AREA_RADIUS_OPTIONS[currentIndex]?.label ?? "This area only";
+
   return (
-    <label className="block w-full space-y-1">
-      <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/80">Area / radius</span>
-      <div className="relative">
-        <select
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          className={`w-full cursor-pointer appearance-none rounded-full border pl-4 pr-10 text-sm text-white focus:outline-none focus:ring-2 focus:ring-teal-400/45 ${
-            solid
-              ? "border-white/25 bg-[#152a45]/95 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
-              : "border-white/20 bg-white/10 py-2.5 backdrop-blur-sm focus:ring-blue-400/50"
-          }`}
-        >
-          {BROWSE_AREA_RADIUS_OPTIONS.map((o) => (
-            <option key={o.value} value={o.value} className="bg-[#0B1A2F] text-white">
-              {o.label}
-            </option>
-          ))}
-        </select>
-        <ChevronDown className="pointer-events-none absolute right-3.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-white/60" />
+    <div className="w-full space-y-2">
+      <div className="flex items-center justify-between gap-3">
+        <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/80">Area / radius</span>
+        <span className="text-xs font-semibold text-white/90">{display}</span>
       </div>
-    </label>
+      <div
+        className={`rounded-2xl border px-4 py-3 ${
+          solid
+            ? "border-white/25 bg-[#152a45]/95 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
+            : "border-white/20 bg-white/10 backdrop-blur-sm"
+        }`}
+      >
+        <Slider
+          value={[currentIndex]}
+          min={0}
+          max={BROWSE_AREA_RADIUS_OPTIONS.length - 1}
+          step={1}
+          aria-label="Area radius"
+          onValueChange={(v) => {
+            const idx = Math.round(v[0] ?? 0);
+            const next = BROWSE_AREA_RADIUS_OPTIONS[Math.min(Math.max(idx, 0), BROWSE_AREA_RADIUS_OPTIONS.length - 1)];
+            if (next) onChange(next.value);
+          }}
+          className="w-full"
+        />
+        <div className="mt-2 flex justify-between text-[10px] font-semibold tracking-wide text-white/55">
+          <span>This area</span>
+          <span>Nationwide</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PriceRangeSlider({
+  value,
+  onChange,
+  compact,
+  tab,
+}: {
+  value: [number, number];
+  onChange: (v: [number, number]) => void;
+  compact?: boolean;
+  tab: Tab;
+}) {
+  const max = tab === "rent" ? 200_000 : 5_000_000;
+  // Smaller steps feel smoother while dragging.
+  const step = tab === "rent" ? 500 : 5_000;
+  const [minV, maxV] = value;
+  const minSafe = Math.min(minV, maxV);
+  const maxSafe = Math.max(minV, maxV);
+  const label = `${formatGBP(minSafe)} – ${formatGBP(maxSafe)}`;
+
+  return (
+    <div className="w-full space-y-2">
+      <div className="flex items-center justify-between gap-3">
+        <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/80">
+          Price {tab === "rent" ? "(per year)" : ""}
+        </span>
+        <span className={`font-semibold text-white/90 ${compact ? "text-xs" : "text-sm"}`}>{label}</span>
+      </div>
+      <div className="rounded-2xl border border-white/20 bg-white/10 px-4 py-3 backdrop-blur-sm">
+        <Slider
+          value={[minSafe, maxSafe]}
+          min={0}
+          max={max}
+          step={step}
+          minStepsBetweenThumbs={1}
+          aria-label="Price range"
+          onValueChange={(v) => {
+            const nextMin = Math.max(0, Math.min(Number(v[0] ?? 0), max));
+            const nextMax = Math.max(0, Math.min(Number(v[1] ?? max), max));
+            onChange([Math.min(nextMin, nextMax), Math.max(nextMin, nextMax)]);
+          }}
+          className="w-full"
+        />
+        <div className="mt-2 flex justify-between text-[10px] font-semibold tracking-wide text-white/55">
+          <span>{formatGBP(0)}</span>
+          <span>{formatGBP(max)}</span>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -167,6 +239,21 @@ export function RightmoveHeroSearch({ variant = "default" }: RightmoveHeroSearch
   const [locationInput, setLocationInput] = useState("");
   const [pickedLocation, setPickedLocation] = useState<string | null>(null);
   const [radius, setRadius] = useState<string>("this_area");
+  const [price, setPrice] = useState<[number, number]>([0, 1_000_000]);
+
+  // Keep the range in-bounds when switching between buy/rent/sold.
+  useEffect(() => {
+    const boundsMax = tab === "rent" ? 200_000 : 5_000_000;
+    const defaultMax = tab === "rent" ? 60_000 : 1_000_000;
+    setPrice(([minV, maxV]) => {
+      const nextMin = Math.max(0, Math.min(minV, boundsMax));
+      const nextMax = Math.max(nextMin, Math.min(maxV, boundsMax));
+      if (nextMax !== maxV || nextMin !== minV) return [nextMin, nextMax];
+      if (maxV === 1_000_000 && tab === "rent") return [minV, defaultMax];
+      if (maxV === 60_000 && tab !== "rent") return [minV, defaultMax];
+      return [minV, maxV];
+    });
+  }, [tab]);
 
   const runSearch = () => {
     const location = (pickedLocation ?? locationInput).trim();
@@ -175,6 +262,9 @@ export function RightmoveHeroSearch({ variant = "default" }: RightmoveHeroSearch
     params.set("listing", tab);
     params.set("sector", sector);
     params.set("radius", radius);
+    const [minPrice, maxPrice] = price;
+    if (minPrice > 0) params.set("minPrice", String(minPrice));
+    if (maxPrice > 0) params.set("maxPrice", String(maxPrice));
     const qs = params.toString();
     navigate(qs ? `/properties?${qs}` : "/properties");
   };
@@ -212,7 +302,11 @@ export function RightmoveHeroSearch({ variant = "default" }: RightmoveHeroSearch
       </div>
 
       <div className={block}>
-        <RadiusDropdown solid={isOverlay} value={radius} onChange={setRadius} />
+        <RadiusSlider solid={isOverlay} value={radius} onChange={setRadius} />
+      </div>
+
+      <div className={block}>
+        <PriceRangeSlider compact={isOverlay} tab={tab} value={price} onChange={setPrice} />
       </div>
 
       <button

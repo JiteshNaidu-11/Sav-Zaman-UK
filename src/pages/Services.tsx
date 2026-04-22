@@ -1,4 +1,4 @@
-import { ArrowRight, Building2, ClipboardList, Megaphone, MessageSquare, TrendingUp } from "lucide-react";
+import { ArrowRight, Building2, ClipboardList, Handshake, Megaphone, MessageSquare, TrendingUp } from "lucide-react";
 import { Link } from "react-router-dom";
 import AnimatedSection from "@/components/AnimatedSection";
 import CTABanner from "@/components/CTABanner";
@@ -13,85 +13,100 @@ import property4 from "@/assets/property-4.jpg";
 const kicker = "text-sm font-semibold uppercase tracking-widest text-blue-300";
 
 const heroHighlights = [
-  { title: "Property Consultation", line: "Buying, selling, and strategic positioning with clear next steps." },
-  { title: "Investment Advisory", line: "Yield, growth, and portfolio logic for serious capital." },
-  { title: "Property Management", line: "Tenants, maintenance, and reporting handled with discipline." },
-  { title: "Digital Marketing for Properties", line: "Creative, channels, and visibility that support serious listing performance." },
-  { title: "Property Listing Service", line: "Premium presentation, distribution, and enquiry handling." },
+  { title: "Buy & Sell Property", line: "End-to-end assistance for buying and selling properties with complete transparency, market insights, and negotiation support." },
+  { title: "Property Consultation", line: "Strategic guidance on buying, selling, and positioning properties for maximum value and long-term growth." },
+  { title: "Investment Advisory", line: "ROI-focused property strategies, rental yield optimization, and portfolio planning for serious investors." },
+  { title: "Property Management", line: "Complete tenant handling, maintenance coordination, and performance reporting for hassle-free ownership." },
+  { title: "Digital Marketing for Properties", line: "Creative campaigns, digital channels, and targeted visibility to attract the right buyers and investors." },
+  { title: "Property Listing Service", line: "Premium listing presentation, multi-platform distribution, and end-to-end enquiry management." },
 ] as const;
 
 const overviewServices = [
   {
+    sectionId: "buy-sell-property",
+    title: "Buy & Sell Property",
+    description:
+      "End-to-end assistance for buying and selling properties with complete transparency, market insights, and negotiation support.",
+    icon: Handshake,
+  },
+  {
     sectionId: "property-consultation",
     title: "Property Consultation",
-    description: "Buying, selling, strategy",
+    description: "Strategic guidance on buying, selling, and positioning properties for maximum value and long-term growth.",
     icon: MessageSquare,
   },
   {
     sectionId: "investment-advisory",
     title: "Investment Advisory",
-    description: "ROI, rental yield, investor strategy",
+    description: "ROI-focused property strategies, rental yield optimization, and portfolio planning for serious investors.",
     icon: TrendingUp,
   },
   {
     sectionId: "property-management",
     title: "Property Management",
-    description: "Tenant, operations, reporting",
+    description: "Complete tenant handling, maintenance coordination, and performance reporting for hassle-free ownership.",
     icon: Building2,
   },
   {
     sectionId: "digital-marketing",
     title: "Digital Marketing for Properties",
-    description: "Creative, campaigns, and channel reach",
+    description: "Creative campaigns, digital channels, and targeted visibility to attract the right buyers and investors.",
     icon: Megaphone,
   },
   {
     sectionId: "property-listing",
     title: "Property Listing Service",
-    description: "Presentation, distribution, lead handling",
+    description: "Premium listing presentation, multi-platform distribution, and end-to-end enquiry management.",
     icon: ClipboardList,
   },
 ] as const;
 
 const detailBlocks = [
   {
+    sectionId: "buy-sell-property",
+    title: "Buy & Sell Property",
+    body: "End-to-end assistance for buying and selling properties with complete transparency, market insights, and negotiation support.",
+    bullets: ["Buying support and shortlisting", "Selling strategy and positioning", "Negotiation and next-step guidance", "End-to-end coordination"],
+    image: property1,
+  },
+  {
     sectionId: "property-consultation",
     title: "Property Consultation",
-    body: "We advise on buying, selling, positioning, and timing — ensuring each decision is structured and commercially sound.",
+    body: "Strategic guidance on buying, selling, and positioning properties for maximum value and long-term growth.",
     bullets: ["Acquisition strategy", "Pricing & positioning", "Off-market opportunities", "Negotiation support"],
     image: property1,
   },
   {
     sectionId: "investment-advisory",
     title: "Investment Advisory",
-    body: "We help investors identify, evaluate, and secure property opportunities aligned with yield, growth, and risk strategy.",
+    body: "ROI-focused property strategies, rental yield optimization, and portfolio planning for serious investors.",
     bullets: ["ROI analysis", "Rental yield strategy", "Portfolio building", "UK & overseas investment"],
     image: property2,
   },
   {
     sectionId: "property-management",
     title: "Property Management",
-    body: "End-to-end property management covering tenants, maintenance, reporting, and compliance.",
+    body: "Complete tenant handling, maintenance coordination, and performance reporting for hassle-free ownership.",
     bullets: ["Tenant management", "Maintenance coordination", "Financial reporting", "Compliance"],
     image: property3,
   },
   {
     sectionId: "digital-marketing",
     title: "Digital Marketing for Properties",
-    body: "Campaign-ready creative and channel thinking so listings stand out in search, social, and premium property feeds.",
+    body: "Creative campaigns, digital channels, and targeted visibility to attract the right buyers and investors.",
     bullets: ["Photography & video direction", "Portal and social campaigns", "Brand-ready collateral", "Performance insight"],
     image: property4,
   },
   {
     sectionId: "property-listing",
     title: "Property Listing Service",
-    body: "Structured listing delivery, syndication, and enquiry workflows that keep serious buyers moving.",
+    body: "Premium listing presentation, multi-platform distribution, and end-to-end enquiry management.",
     bullets: ["Professional presentation", "Multi-channel distribution", "Enquiry qualification", "Viewing coordination"],
     image: property2,
   },
 ] as const;
 
-const cardHover = "transition-all duration-300 hover:-translate-y-1 hover:shadow-xl";
+const cardHover = "transition-all duration-300 ease-out hover:-translate-y-[5px] hover:shadow-xl";
 
 const Services = () => {
   useDocumentTitle(`${siteDocumentTitle} — Services`);
@@ -165,21 +180,23 @@ const Services = () => {
             </p>
           </AnimatedSection>
 
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {overviewServices.map((svc, index) => {
               const Icon = svc.icon;
               return (
                 <AnimatedSection key={svc.sectionId} delay={index * 0.05}>
                   <div
                     className={cn(
-                      "flex h-full flex-col rounded-2xl border border-gray-100 bg-white p-6 shadow-sm",
+                      "flex h-full flex-col justify-between rounded-2xl border border-gray-100 bg-white p-6 shadow-sm",
                       cardHover,
                     )}
                   >
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-900 text-white">
                       <Icon className="h-6 w-6" strokeWidth={1.75} />
                     </div>
-                    <h3 className="mt-5 text-lg font-semibold text-slate-900">{svc.title}</h3>
+                    <h3 className="mt-5 w-full whitespace-normal break-words text-lg font-semibold text-slate-900">
+                      {svc.title}
+                    </h3>
                     <p className="mt-2 flex-1 text-sm leading-relaxed text-gray-600">{svc.description}</p>
                     <a
                       href={`#${svc.sectionId}`}

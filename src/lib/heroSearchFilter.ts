@@ -20,7 +20,19 @@ export function filterHeroSearchDemoProperties(
       listingMode === "buy" ? property.listingType === "Buy" : property.listingType === "Rent";
     if (!listingOk) return false;
 
-    if (sector !== "Any Sector" && property.type !== sector) return false;
+    if (sector !== "Any Sector") {
+      const sectorOk = (() => {
+        // Demo listings are mostly commercial sectors; keep mapping lightweight but functional.
+        if (sector === "Residential") return false;
+        if (sector === "Commercial") return true;
+        if (sector === "Land") return property.type.includes("Land");
+        if (sector === "Development") return property.type.includes("Development");
+        if (sector === "Leisure") return property.type.includes("Leisure") || property.type.includes("Hospitality");
+        if (sector === "Industrial") return property.type.includes("Industrial") || property.type.includes("Warehousing");
+        return property.type === sector;
+      })();
+      if (!sectorOk) return false;
+    }
 
     const loc = property.location.toLowerCase();
     const title = property.title.toLowerCase();

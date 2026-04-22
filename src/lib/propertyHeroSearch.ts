@@ -2,11 +2,14 @@ import type { Property } from "@/data/properties";
 
 export const HERO_SECTOR_OPTIONS = [
   "Any Sector",
+  "Residential",
+  "Commercial",
   "Offices",
   "Retail",
-  "Leisure / Hospitality",
-  "Industrial / Warehousing",
-  "Land / Development",
+  "Leisure",
+  "Industrial",
+  "Land",
+  "Development",
   "Other",
 ] as const;
 
@@ -33,21 +36,42 @@ export function matchesHeroSector(property: Property, sector: HeroSector): boole
   if (sector === "Any Sector") return true;
   const text = `${property.title} ${property.overview} ${property.location} ${property.category}`.toLowerCase();
   switch (sector) {
+    case "Residential":
+      return (
+        property.category === "Residential" ||
+        /\bresidential\b|apartment|flat\b|house\b|home\b|studio\b|duplex|terrace|semi-?detached|detached|bungalow|bedroom/.test(
+          text,
+        )
+      );
+    case "Commercial":
+      return (
+        property.category === "Commercial" ||
+        /\bcommercial\b|office|workspace|retail|showroom|industrial|warehouse|logistics|hospitality|hotel|restaurant|bar\b|gym|spa/.test(
+          text,
+        )
+      );
     case "Offices":
       return /office|workspace|headquarters|\bhq\b|serviced office|commercial floor|tower|plaza|business suite/.test(text);
     case "Retail":
       return /retail|showroom|shop|store|frontage|high street/.test(text);
-    case "Leisure / Hospitality":
+    case "Leisure":
       return /leisure|hospitality|hotel|restaurant|bar\b|café|cafe|gym|spa/.test(text);
-    case "Industrial / Warehousing":
+    case "Industrial":
       return /industrial|warehouse|logistics|distribution|yard|unit\b/.test(text);
-    case "Land / Development":
-      return /\bland\b|development|plot|site\b|scheme|build-to-rent|investment-led/.test(text) || property.category === "Investment";
+    case "Land":
+      return /\bland\b|plot|site\b|acre|hectare|greenfield|brownfield/.test(text);
+    case "Development":
+      return (
+        /development|scheme|planning|redevelopment|conversion|build-to-rent|\bbtr\b|new build|construction/.test(text) ||
+        property.category === "Investment"
+      );
     case "Other":
       return (
         /mixed|miscellaneous|ancillary|alternative|other use/.test(text) ||
         (property.category === "Commercial" &&
-          !/office|workspace|retail|showroom|industrial|warehouse|leisure|hospitality|hotel|land\b|development/.test(text))
+          !/office|workspace|retail|showroom|industrial|warehouse|leisure|hospitality|hotel|land\b|development|planning|construction/.test(
+            text,
+          ))
       );
     default:
       return true;

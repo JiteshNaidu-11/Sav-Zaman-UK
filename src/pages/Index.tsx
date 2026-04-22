@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useEnquiryModal } from "@/context/EnquiryModalContext";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, type TargetAndTransition } from "framer-motion";
 import {
   ArrowRight,
   BookOpen,
@@ -38,6 +38,7 @@ import animatedBrandImage from "@/assets/animated-brand.png";
 import london2 from "@/assets/london-2.jpg";
 import london3 from "@/assets/london 3.jpg";
 import { useDocumentTitle } from "@/lib/useDocumentTitle";
+import { getShowSellHouseSection } from "@/lib/uiFlags";
 
 /** 1–10 plus london-2 and london 3 (12 slides). `objectPosition` tunes crop for mixed aspect ratios. */
 const heroSlides = [
@@ -90,16 +91,17 @@ const processSupport = [
   "The final move is calmer because the journey stayed structured.",
 ] as const;
 
-const journalCardMotion = [
+const journalCardMotion: TargetAndTransition[] = [
   { y: [0, -10, 0], rotate: [0, 0.45, 0] },
   { y: [0, -16, 0], rotate: [0, -0.55, 0] },
   { y: [0, -12, 0], rotate: [0, 0.35, 0] },
-] as const;
+];
 
 const Index = () => {
   useDocumentTitle(siteDocumentTitle);
   const { openEnquiry } = useEnquiryModal();
   const [heroImageIndex, setHeroImageIndex] = useState(0);
+  const [showSellHouseSection, setShowSellHouseSectionState] = useState(true);
   const heroSlideCount = heroSlides.length;
 
   useEffect(() => {
@@ -108,6 +110,10 @@ const Index = () => {
     }, 5000);
     return () => window.clearInterval(timer);
   }, [heroSlideCount]);
+
+  useEffect(() => {
+    setShowSellHouseSectionState(getShowSellHouseSection());
+  }, []);
 
   const activeHeroSlide = heroSlides[heroImageIndex];
 
@@ -134,7 +140,7 @@ const Index = () => {
                   className="absolute inset-0 h-full w-full object-cover"
                   style={{ objectPosition: activeHeroSlide.objectPosition }}
                   decoding="async"
-                  fetchpriority="high"
+                  fetchPriority="high"
                 />
               </motion.div>
             </AnimatePresence>
@@ -162,7 +168,7 @@ const Index = () => {
                 </span>
               </h1>
               <p className="mt-5 max-w-xl font-luxury text-base font-light leading-relaxed tracking-[0.05em] text-[#D1C9C0] [text-shadow:0_1px_16px_rgba(0,0,0,0.4)] md:text-lg md:leading-8">
-                From London to key regional cities, explore residential and commercial listings with structured information,
+                Covering entire United Kingdom to key regional cities, explore residential , commercial listings and land development projects  with structured information,
                 investor guidance, and direct enquiry access.
               </p>
               <div className="mt-6 flex flex-wrap gap-2 md:gap-3">
@@ -204,7 +210,7 @@ const Index = () => {
             className="flex w-full justify-center lg:justify-end"
           >
             <motion.div
-              className="relative w-full max-w-[300px] sm:max-w-[300px] lg:max-w-[min(100%,480px)]"
+              className="relative w-full max-w-[520px]"
               animate={{ y: [0, -12, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
             >
@@ -217,34 +223,52 @@ const Index = () => {
                 }}
                 aria-hidden
               />
-              <div
-                className="relative z-10 mx-auto w-full max-w-[260px] sm:max-w-[300px] lg:max-w-[480px]"
-                style={{
-                  WebkitMaskImage:
-                    "radial-gradient(ellipse 72% 88% at 50% 48%, #fff 52%, rgba(255,255,255,0.65) 72%, transparent 100%)",
-                  maskImage:
-                    "radial-gradient(ellipse 72% 88% at 50% 48%, #fff 52%, rgba(255,255,255,0.65) 72%, transparent 100%)",
-                  WebkitMaskRepeat: "no-repeat",
-                  maskRepeat: "no-repeat",
-                  WebkitMaskSize: "100% 100%",
-                  maskSize: "100% 100%",
-                }}
-              >
-                <img
-                  src={animatedBrandImage}
-                  alt="Sav Zaman"
-                  loading="lazy"
-                  decoding="async"
-                  className="relative z-[1] mx-auto h-auto w-full object-contain opacity-[0.97] shadow-[0_10px_30px_rgba(0,0,0,0.25)] [filter:brightness(0.9)_contrast(0.95)_saturate(0.9)_hue-rotate(5deg)]"
-                />
-                <div
-                  className="pointer-events-none absolute inset-0 z-[2] rounded-[inherit] bg-black/[0.18] mix-blend-multiply"
-                  aria-hidden
-                />
-                <div
-                  className="pointer-events-none absolute inset-0 z-[3] rounded-[inherit] bg-gradient-to-br from-[rgba(0,40,80,0.12)] via-transparent to-[rgba(0,60,70,0.08)] mix-blend-soft-light"
-                  aria-hidden
-                />
+              <div className="relative z-10 mx-auto flex flex-col items-center gap-5 lg:flex-row lg:items-center lg:justify-end lg:gap-6">
+                <div className="relative aspect-square w-full max-w-[260px] overflow-hidden rounded-full border-[3px] border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.3)] sm:max-w-[300px] lg:max-w-[320px]">
+                  <img
+                    src={animatedBrandImage}
+                    alt="Sav Zaman"
+                    loading="lazy"
+                    decoding="async"
+                    className="relative z-[1] h-full w-full object-cover opacity-[0.97] [filter:brightness(0.9)_contrast(0.95)_saturate(0.9)_hue-rotate(5deg)]"
+                  />
+                  <div
+                    className="pointer-events-none absolute inset-0 z-[2] rounded-[inherit] bg-black/[0.18] mix-blend-multiply"
+                    aria-hidden
+                  />
+                  <div
+                    className="pointer-events-none absolute inset-0 z-[3] rounded-[inherit] bg-gradient-to-br from-[rgba(0,40,80,0.12)] via-transparent to-[rgba(0,60,70,0.08)] mix-blend-soft-light"
+                    aria-hidden
+                  />
+                </div>
+
+                {showSellHouseSection ? (
+                  <div className="relative w-full max-w-[420px] overflow-hidden rounded-[28px] border border-white/12 bg-white/[0.06] p-6 text-white shadow-[0_24px_70px_-36px_rgba(2,6,23,0.75)] backdrop-blur-xl">
+                    <div
+                      className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/65 via-black/35 to-black/55"
+                      aria-hidden
+                    />
+                    <div className="relative z-10">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-white/70">
+                        WANT TO SELL YOUR HOUSE?
+                      </p>
+                      <h2 className="mt-3 font-heading text-2xl font-semibold tracking-[-0.03em] text-white">
+                        Sav Zaman – The Property Man
+                      </h2>
+                      <p className="mt-3 text-sm leading-relaxed text-white/80">
+                        I will buy your property within 2 weeks with a fast, transparent, and hassle-free process.
+                      </p>
+                      <div className="mt-5">
+                        <Link
+                          to="/contact"
+                          className="inline-flex items-center justify-center rounded-full bg-[#ff3b30] px-7 py-3 text-sm font-semibold text-white shadow-[0_16px_42px_-22px_rgba(255,59,48,0.65)] transition hover:brightness-105 focus:outline-none focus:ring-2 focus:ring-white/20"
+                        >
+                          Get Offer Now
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                ) : null}
               </div>
             </motion.div>
           </motion.div>
@@ -259,7 +283,7 @@ const Index = () => {
         </div>
       </div>
 
-      <section className="section-padding relative z-10 bg-[hsl(var(--secondary))] pt-36 md:pt-48 lg:pt-52">
+      <section className="section-padding relative z-10 bg-[hsl(var(--secondary))] pt-48 md:pt-56 lg:pt-60">
         <div className="container-custom">
           <AnimatedSection className="max-w-2xl">
             <span className="section-kicker">Property Services</span>

@@ -26,7 +26,9 @@ const Contact = () => {
           <AnimatedSection className="max-w-2xl">
             <span className="pill-tag">Contact</span>
             <h1 className="mt-6 font-heading text-5xl font-semibold leading-[0.96] tracking-[-0.03em] text-white md:text-6xl">
-              Start the property conversation with a clearer brief and a stronger next step.
+              Connect with <span className="whitespace-nowrap">Sav Zaman</span>
+              <br />
+              <span className="whitespace-nowrap">The Property Man</span>
             </h1>
             <p className="mt-6 max-w-xl text-base leading-8 text-white/72 md:text-lg">
               Whether you are buying, selling, booking a viewing, or exploring an investment opportunity, Sav Zaman is ready to hear the brief.
@@ -48,7 +50,7 @@ const Contact = () => {
 
       <section className="relative z-20 -mt-20 bg-[hsl(var(--background))] py-20">
         <div className="mx-auto max-w-7xl px-6">
-          <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-10 -translate-y-12 md:-translate-y-20">
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-14 xl:gap-16 -translate-y-12 md:-translate-y-20">
             <AnimatedSection>
               <div className="flex h-full flex-col gap-8 rounded-2xl border border-white/10 bg-[#0B1A2F] p-6 text-white shadow-xl md:p-8">
                 <div>

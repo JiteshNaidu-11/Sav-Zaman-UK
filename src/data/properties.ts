@@ -43,7 +43,7 @@ export interface Property {
 }
 
 export const PROPERTY_STORAGE_KEY = "sav-zaman.properties";
-export const propertyCategories = ["Residential", "Commercial", "Investment", "Luxury"] as const;
+export const propertyCategories = ["Residential", "Commercial", "Investment", "Land Development"] as const;
 export const propertyListingTypes = ["For Sale", "For Rent"] as const;
 export const propertyStatuses = ["For Sale", "For Rent", "Reserved", "Sold"] as const;
 

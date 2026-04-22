@@ -15,6 +15,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { useEnquiryModal } from "@/context/EnquiryModalContext";
 import { isPropertySlugSaved, toggleSavedPropertySlug } from "@/lib/searchSavedStorage";
+import { toPublicUrl } from "@/lib/toPublicUrl";
 
 function resolvePropertySlugForEnquiry(detailUrl: string | null | undefined, propertySlug: string | undefined): string | null {
   if (propertySlug?.trim()) return propertySlug.trim();
@@ -83,6 +84,7 @@ const PropertyCard = ({
 }: PropertyCardProps) => {
   const navigate = useNavigate();
   const { openEnquiry } = useEnquiryModal();
+  const resolvedImage = image.startsWith("/projects/") ? toPublicUrl(image) : image;
   const slugKey = propertySlug ?? (slug?.startsWith("/properties/") ? slug.replace(/^\/properties\//, "") : slug) ?? "";
   const [saved, setSaved] = useState(() => (slugKey ? isPropertySlugSaved(slugKey) : false));
 
@@ -156,10 +158,14 @@ const PropertyCard = ({
         <div className="relative w-full shrink-0 md:min-h-0 md:w-2/5 md:bg-[hsl(var(--secondary))]">
           <div className="relative h-[180px] overflow-hidden bg-[hsl(var(--secondary))] sm:h-[200px] md:h-[260px] md:min-h-[260px] md:max-h-[260px]">
             <img
-              src={image}
+              src={resolvedImage}
               alt={title}
               className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
               loading="lazy"
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = toPublicUrl("placeholder.svg");
+              }}
             />
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-black/20 md:bg-gradient-to-r md:from-black/35 md:via-transparent md:to-transparent" />
             <div className="absolute left-3 right-3 top-3 flex flex-wrap items-center justify-between gap-2">
@@ -291,10 +297,14 @@ const PropertyCard = ({
     >
       <div className="relative aspect-[16/10] overflow-hidden bg-[hsl(var(--secondary))]">
         <img
-          src={image}
+          src={resolvedImage}
           alt={title}
           className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
           loading="lazy"
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = toPublicUrl("placeholder.svg");
+          }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[rgba(2,6,23,0.88)] via-[rgba(2,6,23,0.08)] to-transparent" />
         <div className="absolute left-4 right-4 top-4 flex flex-wrap items-center justify-between gap-2">

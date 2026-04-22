@@ -18,6 +18,12 @@ function parseListing(value: string | null): PropertyBrowseListing | null {
   return null;
 }
 
+function parseNumericParam(value: string | null): string {
+  if (!value) return "";
+  const n = Number(String(value).replace(/[^\d]/g, ""));
+  return Number.isFinite(n) && n > 0 ? String(n) : "";
+}
+
 /** True when URL carries hero/footer browse params (synced into filter state). */
 function browseQueryParamsActive(sp: URLSearchParams): boolean {
   const loc = sp.get("location");
@@ -26,13 +32,17 @@ function browseQueryParamsActive(sp: URLSearchParams): boolean {
   const listing = parseListing(sp.get("listing"));
   const sectorRaw = sp.get("sector");
   const radiusRaw = sp.get("radius");
+  const minPrice = sp.get("minPrice");
+  const maxPrice = sp.get("maxPrice");
   return (
     Boolean(loc?.trim()) ||
     Boolean(cat) ||
     Boolean(typeParam) ||
     listing !== null ||
     Boolean(sectorRaw?.trim()) ||
-    Boolean(radiusRaw?.trim())
+    Boolean(radiusRaw?.trim()) ||
+    Boolean(minPrice?.trim()) ||
+    Boolean(maxPrice?.trim())
   );
 }
 
@@ -57,9 +67,13 @@ export function PropertyBrowseURLSync() {
     const listingRaw = searchParams.get("listing");
     const sectorRaw = searchParams.get("sector");
     const radiusRaw = searchParams.get("radius");
+    const minPriceRaw = searchParams.get("minPrice");
+    const maxPriceRaw = searchParams.get("maxPrice");
 
     const listing = parseListing(listingRaw);
     const footerParsed = parseFooterBrowseTypeFromUrl(typeParam);
+    const parsedMinPrice = parseNumericParam(minPriceRaw);
+    const parsedMaxPrice = parseNumericParam(maxPriceRaw);
 
     const hasAny =
       Boolean(loc?.trim()) ||
@@ -67,7 +81,9 @@ export function PropertyBrowseURLSync() {
       Boolean(typeParam) ||
       listing !== null ||
       Boolean(sectorRaw?.trim()) ||
-      Boolean(radiusRaw?.trim());
+      Boolean(radiusRaw?.trim()) ||
+      Boolean(parsedMinPrice) ||
+      Boolean(parsedMaxPrice);
 
     if (!hasAny) return;
 
@@ -87,8 +103,11 @@ export function PropertyBrowseURLSync() {
 
       if (listing) {
         next.listing = listing;
-        next.minPrice = "";
-        next.maxPrice = "";
+        // Only clear price if the URL did not explicitly supply a price range.
+        if (!parsedMinPrice && !parsedMaxPrice) {
+          next.minPrice = "";
+          next.maxPrice = "";
+        }
       }
 
       if (footerParsed) {
@@ -113,6 +132,9 @@ export function PropertyBrowseURLSync() {
       if (radiusRaw?.trim() && radiusValues.has(radiusRaw)) {
         next.radius = radiusRaw;
       }
+
+      if (parsedMinPrice) next.minPrice = parsedMinPrice;
+      if (parsedMaxPrice) next.maxPrice = parsedMaxPrice;
 
       return next;
     });

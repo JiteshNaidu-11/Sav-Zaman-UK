@@ -24,6 +24,7 @@ const properties: FooterLinkItem[] = [
 ];
 
 const services: FooterLinkItem[] = [
+  { label: "Buy & Sell a Property", to: "/services#buy-sell-property" },
   { label: "Property Consultation", to: "/services#property-consultation" },
   { label: "Investment Advisory", to: "/services#investment-advisory" },
   { label: "Property Management", to: "/services#property-management" },

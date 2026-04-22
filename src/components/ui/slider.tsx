@@ -9,13 +9,25 @@ const Slider = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SliderPrimitive.Root
     ref={ref}
-    className={cn("relative flex w-full touch-none select-none items-center", className)}
+    style={{ touchAction: "none" }}
+    className={cn("relative flex w-full select-none items-center", className)}
     {...props}
   >
-    <SliderPrimitive.Track className="relative h-2 w-full grow overflow-hidden rounded-full bg-secondary">
-      <SliderPrimitive.Range className="absolute h-full bg-primary" />
+    <SliderPrimitive.Track className="relative h-2.5 w-full grow overflow-hidden rounded-full bg-white/15">
+      <SliderPrimitive.Range className="absolute h-full bg-gradient-to-r from-blue-500 to-teal-400" />
     </SliderPrimitive.Track>
-    <SliderPrimitive.Thumb className="block h-5 w-5 rounded-full border-2 border-primary bg-background ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50" />
+    {(Array.isArray(props.value)
+      ? props.value
+      : Array.isArray(props.defaultValue)
+        ? props.defaultValue
+        : [0]
+    ).map((_, idx) => (
+      <SliderPrimitive.Thumb
+        // eslint-disable-next-line react/no-array-index-key
+        key={idx}
+        className="block h-6 w-6 cursor-grab rounded-full border border-white/35 bg-white shadow-[0_10px_24px_-12px_rgba(2,6,23,0.9)] ring-offset-background transition-[transform,box-shadow] hover:scale-[1.02] active:cursor-grabbing active:scale-[1.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/45 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
+      />
+    ))}
   </SliderPrimitive.Root>
 ));
 Slider.displayName = SliderPrimitive.Root.displayName;

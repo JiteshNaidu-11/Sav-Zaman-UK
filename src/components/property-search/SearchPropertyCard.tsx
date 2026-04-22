@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Heart, MapPin, Phone } from "lucide-react";
 import type { SearchCatalogProperty } from "@/data/searchCatalogTypes";
 import { isPropertySaved, toggleSavedPropertyId } from "@/lib/searchSavedStorage";
+import { toPublicUrl } from "@/lib/toPublicUrl";
 
 type Props = {
   property: SearchCatalogProperty;
@@ -13,6 +14,7 @@ type Props = {
 
 export function SearchPropertyCard({ property, isHighlighted, onHover }: Props) {
   const [saved, setSaved] = useState(() => isPropertySaved(property.id));
+  const imgSrc = property.image.startsWith("/projects/") ? toPublicUrl(property.image) : property.image;
 
   const toggleSave = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -37,10 +39,14 @@ export function SearchPropertyCard({ property, isHighlighted, onHover }: Props) 
       <Link to={`/listings/${property.slug}`} className="block">
         <div className="relative aspect-[16/10] overflow-hidden">
           <img
-            src={property.image}
+            src={imgSrc}
             alt=""
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             loading="lazy"
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = toPublicUrl("placeholder.svg");
+            }}
           />
           {property.featured ? (
             <span className="absolute left-3 top-3 rounded-full bg-gradient-to-r from-blue-600 to-teal-500 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow">

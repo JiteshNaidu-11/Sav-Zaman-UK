@@ -2,6 +2,7 @@ import { FormEvent } from "react";
 import { Building2, Mail, MapPin, Phone, Send, Sparkles, UserRound } from "lucide-react";
 import { Property } from "@/data/properties";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
+import { toPublicUrl } from "@/lib/toPublicUrl";
 
 export interface PropertyInquiryFormState {
   name: string;
@@ -55,6 +56,7 @@ const PropertyInquiryDialog = ({
   isSubmitting,
 }: PropertyInquiryDialogProps) => {
   const copy = modeContent[mode];
+  const heroImgSrc = property.image.startsWith("/projects/") ? toPublicUrl(property.image) : property.image;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -70,7 +72,15 @@ const PropertyInquiryDialog = ({
 
               <div className="mt-6 overflow-hidden rounded-[30px] border border-white/12">
                 <div className="relative aspect-[4/3]">
-                  <img src={property.image} alt={property.title} className="h-full w-full object-cover" />
+                  <img
+                    src={heroImgSrc}
+                    alt={property.title}
+                    className="h-full w-full object-cover"
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = toPublicUrl("placeholder.svg");
+                    }}
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-[rgba(2,6,23,0.92)] via-[rgba(2,6,23,0.26)] to-transparent" />
                   <div className="absolute inset-x-0 bottom-0 p-5">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white/58">{property.category}</p>

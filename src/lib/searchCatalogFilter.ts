@@ -52,7 +52,19 @@ export function filterSearchCatalog(items: SearchCatalogProperty[], f: SearchCat
   return items.filter((p) => {
     if (!listingMatches(f.listing, p)) return false;
 
-    if (f.sector && f.sector !== "Any Sector" && p.sector !== f.sector) return false;
+    if (f.sector && f.sector !== "Any Sector") {
+      const sectorOk = (() => {
+        // `SearchCatalogProperty.sector` is a demo field; support the new top-level options without changing the data.
+        if (f.sector === "Residential") return p.propertyType === "Flat" || p.propertyType === "House";
+        if (f.sector === "Commercial") return !(p.propertyType === "Flat" || p.propertyType === "House");
+        if (f.sector === "Land") return p.propertyType === "Land" || p.sector === "Land / Development";
+        if (f.sector === "Development") return p.sector === "Land / Development" && p.propertyType !== "Land";
+        if (f.sector === "Leisure") return p.sector === "Leisure / Hospitality";
+        if (f.sector === "Industrial") return p.sector === "Industrial / Warehousing";
+        return p.sector === f.sector;
+      })();
+      if (!sectorOk) return false;
+    }
 
     if (f.propertyType && f.propertyType !== "Any" && p.propertyType !== f.propertyType) return false;
 

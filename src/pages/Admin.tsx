@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { type Session } from "@supabase/supabase-js";
 import { motion } from "framer-motion";
@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import AnimatedSection from "@/components/AnimatedSection";
+import { getShowSellHouseSection, setShowSellHouseSection } from "@/lib/uiFlags";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -90,6 +91,107 @@ const createEmptyForm = (): PropertyFormState => ({
   uploadedGalleryImages: [],
   videoUrl: "",
 });
+
+type PriceCurrency = "GBP" | "USD" | "EUR";
+
+const PRICE_CURRENCIES: { code: PriceCurrency; label: string }[] = [
+  { code: "GBP", label: "GBP (£)" },
+  { code: "USD", label: "USD ($)" },
+  { code: "EUR", label: "EUR (€)" },
+];
+
+type AreaUnit = "Sqft" | "Sqyd" | "Sqm" | "Acres" | "Hectares";
+
+const AREA_UNITS: { value: AreaUnit; label: string }[] = [
+  { value: "Sqft", label: "Sqft" },
+  { value: "Sqyd", label: "Sq yd" },
+  { value: "Sqm", label: "Sqm" },
+  { value: "Acres", label: "Acres" },
+  { value: "Hectares", label: "Hectares" },
+];
+
+function parseArea(area: string): { numberPart: string; unit: AreaUnit } {
+  const trimmed = String(area || "").trim();
+  if (!trimmed) return { numberPart: "", unit: "Sqft" };
+  const match = trimmed.match(/^([\d,.\s]+)\s*([a-zA-Z]+)?$/);
+  const rawNumber = (match?.[1] ?? trimmed).replace(/[^\d.]/g, "");
+  const rawUnit = (match?.[2] ?? "").trim().toLowerCase();
+  const unit =
+    rawUnit === "sqyd" || rawUnit === "sqy" || rawUnit === "yd2" || rawUnit === "yd" || rawUnit === "yards"
+      ? "Sqyd"
+      : rawUnit === "sqm"
+        ? "Sqm"
+        : rawUnit === "acres" || rawUnit === "acre"
+          ? "Acres"
+          : rawUnit === "hectares" || rawUnit === "hectare" || rawUnit === "ha"
+            ? "Hectares"
+            : "Sqft";
+  return { numberPart: rawNumber, unit };
+}
+
+function buildArea(numberPart: string, unit: AreaUnit): string {
+  const digits = String(numberPart || "").replace(/[^\d.]/g, "");
+  if (!digits) return "";
+  const formatted = digits.includes(".") ? digits : formatNumberWithCommas(digits);
+  return `${formatted} ${unit}`;
+}
+
+const BED_OPTIONS: string[] = Array.from({ length: 99 }, (_, idx) => idx + 1)
+  .flatMap((n) => (n >= 50 ? [n] : [n, Number(`${n}.5`)]))
+  .filter((v) => (typeof v === "number" ? v <= 50 : true))
+  .map((v) => `${v} BHK`);
+
+const BATH_OPTIONS: string[] = Array.from({ length: 10 }, (_, idx) => String(idx + 1));
+
+const AMENITY_OPTIONS: readonly string[] = [
+  "Security",
+  "CCTV Surveillance",
+  "Power Backup",
+  "Lift",
+  "Reserved Parking",
+  "Visitor Parking",
+  "Gated Community",
+  "Club House",
+  "Gym",
+  "Swimming Pool",
+  "Children's Play Area",
+  "Garden",
+  "Modular Kitchen",
+  "Vastu Compliant",
+  "Water Supply",
+  "Fire Safety",
+  "Near School",
+  "Near Hospital",
+  "Near Market",
+  "Corner Plot",
+  "Main Road Facing",
+  "Loan Assistance",
+  "Rent Agreement Support",
+] as const;
+
+function formatNumberWithCommas(rawDigits: string): string {
+  const cleaned = rawDigits.replace(/[^\d]/g, "");
+  if (!cleaned) return "";
+  // Remove leading zeros but keep a single "0" if the value is zero.
+  const normalized = cleaned.replace(/^0+(?=\d)/, "");
+  return normalized.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+function splitPriceValue(price: string): { currency: PriceCurrency; numberPart: string } {
+  const trimmed = String(price || "").trim();
+  const match = trimmed.match(/^(GBP|USD|EUR)\s+(.*)$/i);
+  if (match) {
+    const currency = match[1].toUpperCase() as PriceCurrency;
+    const numberPart = match[2] ?? "";
+    return { currency, numberPart };
+  }
+  return { currency: "GBP", numberPart: trimmed };
+}
+
+function buildPrice(currency: PriceCurrency, numberPart: string): string {
+  const formatted = formatNumberWithCommas(numberPart);
+  return formatted ? `${currency} ${formatted}` : "";
+}
 
 function isDataImageSource(value?: string): boolean {
   return Boolean(value?.startsWith("data:image/"));
@@ -204,11 +306,14 @@ const Admin = () => {
   const [query, setQuery] = useState("");
   const [editingSlug, setEditingSlug] = useState<string | null>(null);
   const [form, setForm] = useState<PropertyFormState>(createEmptyForm);
+  const [priceCurrency, setPriceCurrency] = useState<PriceCurrency>("GBP");
+  const [areaUnit, setAreaUnit] = useState<AreaUnit>("Sqft");
   const [isProcessingPrimaryImage, setIsProcessingPrimaryImage] = useState(false);
   const [isProcessingGalleryImages, setIsProcessingGalleryImages] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [session, setSession] = useState<Session | null>(null);
   const [authLoading, setAuthLoading] = useState(true);
+  const [showSellHouseSection, setShowSellHouseSectionState] = useState(true);
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
@@ -242,6 +347,10 @@ const Admin = () => {
       active = false;
       subscription.unsubscribe();
     };
+  }, []);
+
+  useEffect(() => {
+    setShowSellHouseSectionState(getShowSellHouseSection());
   }, []);
 
   const isAuthenticated = Boolean(session);
@@ -323,15 +432,27 @@ const Admin = () => {
   const residentialCount = properties.filter((property) => property.category === "Residential").length;
   const galleryPreviewImages = Array.from(new Set([...parseMultiline(form.galleryText), ...form.uploadedGalleryImages]));
   const primaryPreviewImage = form.uploadedPrimaryImage || form.image.trim();
+  const selectedAmenities = useMemo(() => new Set(parseMultiline(form.amenitiesText)), [form.amenitiesText]);
 
   const resetForm = () => {
     setEditingSlug(null);
     setForm(createEmptyForm());
+    setPriceCurrency("GBP");
+    setAreaUnit("Sqft");
   };
 
   const handleEdit = (property: Property) => {
     setEditingSlug(property.slug);
-    setForm(propertyToForm(property));
+    const nextForm = propertyToForm(property);
+    const split = splitPriceValue(nextForm.price);
+    setPriceCurrency(split.currency);
+    const parsedArea = parseArea(nextForm.area);
+    setAreaUnit(parsedArea.unit);
+    setForm({
+      ...nextForm,
+      price: buildPrice(split.currency, split.numberPart),
+      area: buildArea(parsedArea.numberPart, parsedArea.unit),
+    });
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -693,6 +814,36 @@ const Admin = () => {
 
       <section className="section-padding bg-warm">
         <div className="container-custom">
+          <AnimatedSection>
+            <div className="glass-card mb-8 p-5 md:p-6">
+              <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">UI Settings</p>
+                  <h2 className="mt-2 font-heading text-2xl font-bold text-foreground">Homepage sections</h2>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                    Toggle visibility for isolated homepage sections only.
+                  </p>
+                </div>
+                <label className="flex items-center justify-between gap-4 rounded-2xl border border-border/70 bg-white px-4 py-4 md:min-w-[360px]">
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-foreground">Show Sell House Section</p>
+                    <p className="mt-1 text-xs text-muted-foreground">Controls the homepage “Want to sell your house?” section.</p>
+                  </div>
+                  <input
+                    type="checkbox"
+                    checked={showSellHouseSection}
+                    onChange={(e) => {
+                      const next = e.target.checked;
+                      setShowSellHouseSectionState(next);
+                      setShowSellHouseSection(next);
+                    }}
+                    className="h-5 w-5 rounded border-accent/40 accent-[hsl(var(--accent))]"
+                  />
+                </label>
+              </div>
+            </div>
+          </AnimatedSection>
+
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             {[
               { label: "Total Listings", value: properties.length.toString(), icon: LayoutDashboard },
@@ -974,6 +1125,10 @@ const Admin = () => {
                   onSubmit={handleSubmit}
                   className="space-y-6 bg-[radial-gradient(circle_at_top_right,rgba(37,99,235,0.06),transparent_34%)] p-6"
                 >
+                  <div className="rounded-[28px] border border-border/70 bg-white p-5 shadow-[0_20px_50px_-40px_rgba(15,23,42,0.3)] md:p-6">
+                    <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">Property Form</p>
+                    <h2 className="mt-2 font-heading text-2xl font-bold text-foreground">Add / edit a listing</h2>
+                  </div>
                   <input
                     ref={primaryImageInputRef}
                     type="file"
@@ -1001,7 +1156,40 @@ const Admin = () => {
 		                    </div>
 	                    <div className="space-y-2">
 	                      <label className="text-sm font-medium text-foreground">Price</label>
-	                      <Input value={form.price} onChange={(event) => setForm((current) => ({ ...current, price: event.target.value }))} placeholder="GBP 845,000" className="h-11 rounded-xl border-border/70" />
+	                      <div className="grid grid-cols-1 gap-3 sm:grid-cols-[140px_1fr]">
+	                        <Select
+	                          value={priceCurrency}
+	                          onValueChange={(value) => {
+	                            const next = (value || "GBP") as PriceCurrency;
+	                            setPriceCurrency(next);
+	                            setForm((current) => {
+	                              const { numberPart } = splitPriceValue(current.price);
+	                              return { ...current, price: buildPrice(next, numberPart) };
+	                            });
+	                          }}
+	                        >
+	                          <SelectTrigger className="h-11 rounded-xl border-border/70">
+	                            <SelectValue />
+	                          </SelectTrigger>
+	                          <SelectContent>
+	                            {PRICE_CURRENCIES.map((c) => (
+	                              <SelectItem key={c.code} value={c.code}>
+	                                {c.label}
+	                              </SelectItem>
+	                            ))}
+	                          </SelectContent>
+	                        </Select>
+	                        <Input
+	                          value={formatNumberWithCommas(splitPriceValue(form.price).numberPart)}
+	                          onChange={(event) => {
+	                            const nextNumberPart = event.target.value;
+	                            setForm((current) => ({ ...current, price: buildPrice(priceCurrency, nextNumberPart) }));
+	                          }}
+	                          placeholder="845,000"
+	                          className="h-11 rounded-xl border-border/70"
+	                          inputMode="numeric"
+	                        />
+	                      </div>
 	                    </div>
                     <div className="space-y-2 md:col-span-2">
                       <label className="text-sm font-medium text-foreground">Full Address</label>
@@ -1054,15 +1242,70 @@ const Admin = () => {
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-foreground">Area</label>
-                      <Input value={form.area} onChange={(event) => setForm((current) => ({ ...current, area: event.target.value }))} placeholder="1650 Sqft" className="h-11 rounded-xl border-border/70" />
+                      <div className="grid grid-cols-1 gap-3 sm:grid-cols-[140px_1fr]">
+                        <Select
+                          value={areaUnit}
+                          onValueChange={(value) => {
+                            const next = (value || "Sqft") as AreaUnit;
+                            setAreaUnit(next);
+                            setForm((current) => {
+                              const parsed = parseArea(current.area);
+                              return { ...current, area: buildArea(parsed.numberPart, next) };
+                            });
+                          }}
+                        >
+                          <SelectTrigger className="h-11 rounded-xl border-border/70">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {AREA_UNITS.map((u) => (
+                              <SelectItem key={u.value} value={u.value}>
+                                {u.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <Input
+                          value={parseArea(form.area).numberPart}
+                          onChange={(event) => {
+                            const nextNumberPart = event.target.value;
+                            setForm((current) => ({ ...current, area: buildArea(nextNumberPart, areaUnit) }));
+                          }}
+                          placeholder="1650"
+                          className="h-11 rounded-xl border-border/70"
+                          inputMode="decimal"
+                        />
+                      </div>
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-foreground">Beds</label>
-                      <Input value={form.beds} onChange={(event) => setForm((current) => ({ ...current, beds: event.target.value }))} placeholder="3 BHK" className="h-11 rounded-xl border-border/70" />
+                      <Select value={form.beds} onValueChange={(value) => setForm((current) => ({ ...current, beds: value }))}>
+                        <SelectTrigger className="h-11 rounded-xl border-border/70">
+                          <SelectValue placeholder="Select BHK" />
+                        </SelectTrigger>
+                        <SelectContent className="max-h-[300px]">
+                          {BED_OPTIONS.map((opt) => (
+                            <SelectItem key={opt} value={opt}>
+                              {opt}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-foreground">Baths</label>
-                      <Input value={form.baths} onChange={(event) => setForm((current) => ({ ...current, baths: event.target.value }))} placeholder="2" className="h-11 rounded-xl border-border/70" />
+                      <Select value={form.baths} onValueChange={(value) => setForm((current) => ({ ...current, baths: value }))}>
+                        <SelectTrigger className="h-11 rounded-xl border-border/70">
+                          <SelectValue placeholder="Select baths" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {BATH_OPTIONS.map((opt) => (
+                            <SelectItem key={opt} value={opt}>
+                              {opt}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
                   </div>
 
@@ -1092,7 +1335,10 @@ const Admin = () => {
                             </button>
                           ) : null}
                         </div>
-                        <p className="text-xs text-muted-foreground">Use a direct image URL or pick one from device storage or phone gallery.</p>
+                        <p className="text-xs text-muted-foreground">
+                          This is the main cover image shown on property cards and at the top of the property detail page. Use a public image URL, or
+                          choose one from your device to upload.
+                        </p>
                         {form.uploadedPrimaryImage ? <p className="text-xs font-medium text-accent">Uploaded image selected from device.</p> : null}
                         {primaryPreviewImage ? (
                           <div className="overflow-hidden rounded-2xl border border-border/70 bg-muted">
@@ -1135,9 +1381,10 @@ const Admin = () => {
 	                          </button>
 	                        ) : null}
 	                      </div>
-	                      <p className="text-xs text-muted-foreground">
-	                        Paste public image URLs or pick multiple files from device storage or phone gallery.
-	                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        These images form the full gallery on the property detail page (buyers can swipe through them). Add one public image URL per line,
+                        or upload multiple images from your device.
+                      </p>
 	                    </div>
 
 	                    {galleryPreviewImages.length ? (
@@ -1206,6 +1453,39 @@ const Admin = () => {
 	                          placeholder={"One highlight per line\nCorner plot with excellent approach road access\nPremium society with modern amenities"}
 	                          className="min-h-[170px] rounded-2xl border-border/70"
 	                        />
+                          <div className="mt-4 rounded-2xl border border-border/70 bg-white p-4">
+                            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">Quick select</p>
+                            <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+                              Click to add/remove common amenities. Custom items can still be typed manually above.
+                            </p>
+                            <div className="mt-3 flex flex-wrap gap-2">
+                              {AMENITY_OPTIONS.map((amenity) => {
+                                const active = selectedAmenities.has(amenity);
+                                return (
+                                  <button
+                                    key={amenity}
+                                    type="button"
+                                    onClick={() => {
+                                      setForm((current) => {
+                                        const list = parseMultiline(current.amenitiesText);
+                                        const set = new Set(list);
+                                        if (set.has(amenity)) set.delete(amenity);
+                                        else set.add(amenity);
+                                        return { ...current, amenitiesText: Array.from(set).join("\n") };
+                                      });
+                                    }}
+                                    className={`rounded-full border px-3 py-2 text-xs font-semibold transition ${
+                                      active
+                                        ? "border-accent/30 bg-accent/10 text-accent"
+                                        : "border-border/70 bg-white text-foreground hover:border-accent/25 hover:bg-[hsl(var(--secondary))]"
+                                    }`}
+                                  >
+                                    {amenity}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
 	                        <p className="text-xs text-muted-foreground">
 	                          These lines appear inside the red-accent amenities card on the property detail page.
 	                        </p>
@@ -1224,20 +1504,6 @@ const Admin = () => {
                             <p className="text-sm font-semibold text-foreground">Mark as featured listing</p>
                             <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
                               Featured properties surface on the home page and stay prioritized inside the listing feed.
-                            </p>
-                          </div>
-                        </label>
-                        <label className="flex cursor-pointer items-start gap-4 rounded-2xl border border-border/70 bg-white p-4 transition-colors hover:border-accent/30">
-                          <input
-                            type="checkbox"
-                            checked={form.heroFeatured}
-                            onChange={(event) => setForm((current) => ({ ...current, heroFeatured: event.target.checked }))}
-                            className="mt-1 h-4 w-4 rounded border-accent/40 accent-[hsl(var(--accent))]"
-                          />
-                          <div>
-                            <p className="text-sm font-semibold text-foreground">Show on hero cards</p>
-                            <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-                              Control whether this property appears in the homepage hero card grid.
                             </p>
                           </div>
                         </label>

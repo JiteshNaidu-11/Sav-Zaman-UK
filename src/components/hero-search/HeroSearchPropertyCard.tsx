@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { MapPin } from "lucide-react";
 import type { HeroSearchDemoProperty } from "@/data/heroSearchDemoProperties";
+import { toPublicUrl } from "@/lib/toPublicUrl";
 
 type Props = {
   property: HeroSearchDemoProperty;
@@ -9,6 +10,7 @@ type Props = {
 
 export function HeroSearchPropertyCard({ property, index }: Props) {
   const isRent = property.listingType === "Rent";
+  const imgSrc = property.image.startsWith("/projects/") ? toPublicUrl(property.image) : property.image;
 
   return (
     <motion.article
@@ -21,10 +23,14 @@ export function HeroSearchPropertyCard({ property, index }: Props) {
     >
       <div className="relative aspect-[4/3] overflow-hidden">
         <img
-          src={property.image}
+          src={imgSrc}
           alt=""
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
           loading="lazy"
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = toPublicUrl("placeholder.svg");
+          }}
         />
         <div className="absolute left-3 top-3 flex flex-wrap gap-2">
           <span className="rounded-full bg-[#0B1A2F]/90 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-white backdrop-blur-sm">

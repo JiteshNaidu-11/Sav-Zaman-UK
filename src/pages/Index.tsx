@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { GetOfferModal } from "@/components/GetOfferModal";
 import { useEnquiryModal } from "@/context/EnquiryModalContext";
 import { AnimatePresence, motion, type TargetAndTransition } from "framer-motion";
 import {
@@ -98,6 +99,7 @@ const journalCardMotion: TargetAndTransition[] = [
 ];
 
 const Index = () => {
+  const [offerModalOpen, setOfferModalOpen] = useState(false);
   useDocumentTitle(siteDocumentTitle);
   const { openEnquiry } = useEnquiryModal();
   const [heroImageIndex, setHeroImageIndex] = useState(0);
@@ -259,12 +261,13 @@ const Index = () => {
                         I will buy your property within 2 weeks with a fast, transparent, and hassle-free process.
                       </p>
                       <div className="mt-5">
-                        <Link
-                          to="/contact"
+                        <button
+                          type="button"
+                          onClick={() => setOfferModalOpen(true)}
                           className="inline-flex items-center justify-center rounded-full bg-[#ff3b30] px-7 py-3 text-sm font-semibold text-white shadow-[0_16px_42px_-22px_rgba(255,59,48,0.65)] transition hover:brightness-105 focus:outline-none focus:ring-2 focus:ring-white/20"
                         >
                           Get Offer Now
-                        </Link>
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -275,6 +278,8 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      <GetOfferModal open={offerModalOpen} onOpenChange={setOfferModalOpen} />
 
         <div className="pointer-events-none absolute bottom-0 left-0 right-0 z-[35] flex translate-y-1/2 justify-center px-3 sm:px-5">
           <div className="pointer-events-auto w-[95%] md:w-[78%] md:max-w-[920px] lg:w-[75%]">
